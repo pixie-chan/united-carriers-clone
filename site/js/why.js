@@ -91,49 +91,65 @@ void main() {
   vec2 euv = vec2(atan(R.z, R.x) / 6.28318 + .5, acos(clamp(R.y, -1.0, 1.0)) / 3.14159);
   vec3 env = texture2D(uEnv, euv).rgb;
 
-  vec3 deep = vec3(0.022, 0.065, 0.155);
-  vec3 col = deep + vec3(.012, .028, .05) * (n1.x + n1.y + n2.x * .5);
-  col += env * 0.5 * (0.02 + 0.12 * fres);
+  vec3 deep = vec3(0.031, 0.094, 0.210);
+  vec3 col = deep + vec3(.034, .062, .092) * (n1.x + n1.y + n2.x * .5);
+  col += env * 0.5 * (0.05 + 0.22 * fres);
   float spec = pow(max(dot(reflect(-uSun, n), V), 0.0), 90.0);
   col += vec3(1.0, .98, .92) * spec * .65;
 
-  // ---- wake (screen space, anchored to the ship's DOM box; trails ABOVE the stern) ----
+  // ---- wakes (screen space, anchored to the ship's DOM box; stern at the TOP of the box) ----
   vec2 suv = vec2(gl_FragCoord.x / uResolution.x, gl_FragCoord.y / uResolution.y);
   float dx = abs(suv.x - uShipUv.x);
   float sc = uShipScale;
   float foam = 0.0;
   if (sc > 0.02 && uWake > 0.01) {
-    float halfW = max(uShipHalfW, 0.008);          // ship half width, uv units
+    float halfW = max(uShipHalfW, 0.008);           // ship half width, uv units
     float halfL = max(uShipHalfLen, 0.02);
     float sternY = uShipTop;                        // stern edge (top of the ship box)
-    float dyA = suv.y - sternY;                     // >0 above the stern (behind the ship)
-    float L = max(halfL * 0.55, 0.06);              // wake plume length
-    if (dyA > -0.01 && dyA < L * 1.8) {
-      float k = clamp(dyA / L, 0.0, 1.0);
-      float hw = halfW * mix(0.9, 4.0, k) * (1.0 + 0.13 * sin(dyA * 95.0 + t * .8 + k * 9.0));
-      float edge = exp(-pow((dx - hw) / (0.004 + 0.05 * k), 2.0));
-      float inner = smoothstep(hw, 0.0, dx) * exp(-dyA / max(0.03, 0.5 * L)) * 0.5;
-      float wash = exp(-pow(dx / (halfW * 1.1), 2.0)) * exp(-pow(max(dyA, 0.0) / (0.3 * L), 2.0)) * 0.6;
-      float churnN = sin(t * 2.2 + dx * 520.0 + dyA * 380.0) * sin(t * 1.7 - dyA * 210.0 + dx * 330.0);
-      float churn = .72 + .28 * churnN;
-      // foam texture: twice domain-warped ripple noise, thresholded hard so it reads as whitewater
-      vec2 spuv = suv * vec2(23.0, 16.0);
-      vec2 warp1 = texture2D(uNormal, spuv * .31 + vec2(t * .02)).xy * 2.0 - 1.0;
-      vec2 warp2 = texture2D(uNormal, spuv * .73 - vec2(t * .03, t * .02)).zx * 2.0 - 1.0;
-      float sp = texture2D(uNormal, spuv + warp1 * 2.4 + warp2 * 1.2 + vec2(t * .05, -t * .04)).b;
-      float sp2 = texture2D(uNormal, spuv * 1.9 + warp2 * 2.0).b;
-      float speckle = mix(.2, 1.3, smoothstep(.4, .72, sp * .65 + sp2 * .35));
-      float density = .4 + .6 * texture2D(uNormal, suv * vec2(2.6, 1.9) + vec2(t * .012, t * .008)).g;
-      foam = smoothstep(.06, .42, (edge * exp(-k * 1.1) + inner + wash) * churn) * speckle * density;
+    float bowY = sternY - 2.0 * halfL;              // bow edge (bottom of the ship box)
+
+    // breakup fields (churn + speckle) shared by all foam: keeps everything streaky, never a solid band
+    vec2 spuv = suv * vec2(23.0, 16.0);
+    vec2 warp1 = texture2D(uNormal, spuv * .31 + vec2(t * .02)).xy * 2.0 - 1.0;
+    vec2 warp2 = texture2D(uNormal, spuv * .73 - vec2(t * .03, t * .02)).zx * 2.0 - 1.0;
+    float sp = texture2D(uNormal, spuv + warp1 * 2.4 + warp2 * 1.2 + vec2(t * .05, -t * .04)).b;
+    float sp2 = texture2D(uNormal, spuv * 1.9 + warp2 * 2.0).b;
+    float speckle = mix(.18, 1.3, smoothstep(.40, .72, sp * .65 + sp2 * .35));
+    float churn = .55 + .45 * (sin(t * 2.2 + dx * 520.0 + suv.y * 380.0) * sin(t * 1.7 - suv.y * 210.0 + dx * 330.0) * .5 + .5);
+    float breakup = speckle * churn;
+    float scGate = smoothstep(0.012, 0.08, halfW); // foam fades out as the ship shrinks
+
+    // 1) bow wave: foam flaring outward + down from the bow (bottom end)
+    float dyB = bowY - suv.y;
+    if (dyB > -0.01 && dyB < halfL * 1.4 + 0.14) {
+      float arm = halfW + dyB * 0.5;
+      float armLine = exp(-pow((dx - arm) / (0.007 + 0.05 * dyB + halfW * 0.10), 2.0));
+      float wash = smoothstep(arm, halfW * 0.15, dx) * 0.5;
+      float fade = exp(-max(dyB, 0.0) / (0.45 * halfL + 0.09));
+      foam += (armLine * 0.85 + wash) * fade * breakup;
     }
-    // gentle side wash along the hull, fading to nothing (soft, no hard strips)
-    float dyS = sternY - suv.y;                     // >0 along the ship, downward
-    if (dyS > 0.0 && dyS < halfL * 2.1) {
-      float fade = smoothstep(halfL * 2.1, halfL * 0.6, dyS);
-      foam += exp(-pow((dx - halfW * 1.14) / (0.004 + 0.012 * sc), 2.0)) * 0.45 * fade;
+
+    // 2) hull side foam: narrow broken streaks hugging the hull edges, fading toward the bow
+    float dyIn = sternY - suv.y;
+    if (dyIn > -0.02 && dyIn < 2.0 * halfL + 0.05) {
+      float edgeD = abs(dx - halfW * 1.02);
+      float w0 = max(0.0035, halfW * 0.065);
+      float side = exp(-pow(edgeD / w0, 2.0));
+      float fade = exp(-max(dyIn, 0.0) / (0.95 * halfL));
+      foam += side * fade * (0.30 + 0.55 * breakup);
     }
+
+    // 3) faint stern trail, above the stern (trailing wake)
+    float dyA = suv.y - sternY;
+    if (dyA > -0.01 && dyA < 0.9 * halfL + 0.1) {
+      float trail = exp(-pow(dx / (halfW * 0.55), 2.0));
+      float fade = exp(-max(dyA, 0.0) / (0.30 * halfL + 0.06));
+      foam += trail * fade * 0.35 * breakup;
+    }
+
+    foam *= scGate;
   }
-  col = mix(col, vec3(.94, .97, 1.0), clamp(foam * 2.1, 0.0, .92));
+  col = mix(col, vec3(.94, .97, 1.0), clamp(foam * 1.35, 0.0, .85));
 
   // ---- photo overlay composite (saturation blend of the brightened overlay) ----
   vec2 ouv = (suv - .5) / max(uOverlayScale, .2) + .5;

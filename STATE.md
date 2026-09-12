@@ -143,3 +143,45 @@ remains a dedicated milestone; not a regression.
 
 Public: https://github.com/pixie-chan/united-carriers-clone (created 2026-09-12, initial commit 3d08309,
 3336 files / 418 MB, remote byte-sum matches local exactly).
+
+## Session log 2026-09-12 (late #3): services choreography rebuilt (forklift) + ship wake reshape
+
+User report: "forklift animation and ship animation are completely broken". Forensic pass at 1920x1080 against the
+live mirror (_ref/analysis/repro2*.py, forensic.py, frame-phase-compare2.py - canvas pixel dumps + frame matching):
+
+FORKLIFT / service screen-1 canvas
+- The live's canvas is a THREE-sequence chain: seq0 (159f) -> seq1 (97f) -> seq2 (97f). Boundaries are seamless
+  (end/start frame diffs < 1.0). Measured live mapping (offsets from .home-service top, in viewport heights):
+  seq0 [1.00..2.26], seq1 [2.26..3.79], seq2 [3.79..4.53], then hold on the last frame.
+- The old build played ONLY seq0 over [1..4.5] (~2.5x too slow) and never played seq1/seq2 (the carry + truck-load
+  phases) - hence "completely broken". sections.js now concatenates seq0+1+2 and scrubs the global index over the
+  measured windows. Verified: displayed frame within +-3 of live at every phase (f=2.5 -> seq1 f13 vs live 15, etc).
+- .home-service-land: live has a full-width #111 ground band at top 55.1rem / h 5.62rem painted OVER the canvas
+  (machine wheels sink into it). It was missing (machine floated on white). Added to index.html + sections.css;
+  paint order: canvases -> land -> containers -> dark -> head -> cta -> cards.
+- Container stack sits ON the land: live tops are white 28.18rem / blue+orange 41.62rem. Old values were +6.1rem
+  too low (cropped stack). Canvas top also corrected 15.03rem -> 8.89rem (same +6.1rem offset). Machine scene now
+  matches live pixel-for-pixel at f=2.0 (checked column samples).
+- Dark panel: rises from the bottom over ~[4.3..6.0vh] and RESTS covering the bottom 60% (top edge y=432 @1920):
+  it is NOT a full-screen cover. GSAP TRAP (cost an hour): do not combine a CSS `transform: translateY(100%)`
+  pre-state with yPercent tweens - GSAP decomposes the CSS transform into its y cache (1080px) and yPercent stacks
+  ON TOP of it, so the element never reveals. Drive `y` in px instead.
+- Dark-screen typography: filmstrip behavior - heading enters from the right (~6.4vh), settles left (~7.0), exits
+  left (~7.7) as the cards roll in (cards sweep retimed to ~[7.8..9.6vh]). Second line "Under one group." ghosted
+  (rgba(255,255,255,.24)) as live. Single desc paragraph (old build had two overlapping). "Our Services" pill
+  button added, centered at 55.3rem, fades with the dark.
+- Verified 1920x1080: dark boundary within ~4-30px of live at every phase (432/432 at rest), no JS errors.
+- Known remaining (next pass): live's top white band carries a truck + giant ghost "OUR SERVICES" wordmark
+  scrolling horizontally (~f 6.5-10); the clone's band is empty there.
+
+SHIP / ocean wake (js/why.js)
+- The wake "side wash" rendered as TWO FULL-HEIGHT GLOWING BEAMS (exp(-((dx-halfW*1.14)/s)^2)*0.45 * screen-height
+  fade = solid bright strips, no noise). Replaced: bow-wave V (bottom end, flaring out+down), thin broken hull
+  streaks (stern->bow fade, width tied to ship scale), faint stern trail above, all modulated by churn/speckle
+  noise and scaled by a size gate so the wake fades as the ship shrinks. Water brightened (deep 0.031/0.094/0.210,
+  stronger normal-mod + env). Ship orientation confirmed from the asset: stern (superstructure) at TOP, bow DOWN.
+
+Tooling added: _ref/analysis/repro2.py (phase walk + contact sheets), canvas-dump.py / frame-match.py /
+frame-phase-compare2.py (in-page canvas dumps matched against source frames to find the displayed frame index),
+forensic.py / tail-phase.py (5-sequence identification), skeleton.py, sweep-svc.py, endgame.py, verify4.py.
+QA imagery under _ref/analysis/repro2/ is gitignored (large PNGs).

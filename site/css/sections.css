@@ -28,16 +28,23 @@
 .home-service { position: relative; height: 910.5rem; margin-top: -23.63rem; background: #fff; }
 .service-sticky { position: sticky; top: 0; height: 100vh; overflow: hidden; }
 
-.service-crane { position: absolute; left: -18.8rem; top: 15.03rem; width: 100.4rem; height: 56.5rem; }
+.service-crane { position: absolute; left: -18.8rem; top: 8.89rem; width: 100.4rem; height: 56.5rem; }
 .service-truck { position: absolute; left: 122rem; top: 60rem; width: 78.4rem; height: 22rem; }
 .service-speed { position: absolute; left: 2.8rem; top: 54rem; font-family: var(--font-mono);
   font-size: .75rem; letter-spacing: .05em; text-transform: uppercase; color: rgba(17,17,17,.6);
   display: flex; gap: .4rem; }
-.service-head { position: absolute; left: 2.5rem; top: 6rem; width: 34rem; }
+.service-head { position: absolute; left: 2.5rem; top: 30rem; width: 60rem; }
 .service-head h2 { font-family: var(--font-heading); font-weight: 700; text-transform: uppercase;
-  font-size: 4.5rem; line-height: 1.05; color: var(--black); }
-.service-head .sub { margin-top: 2.2rem; font-size: 1.2rem; line-height: 1.4; color: rgba(17,17,17,.72); font-weight: 500; }
-.service-head .sub + .sub { margin-top: 1.2rem; }
+  font-size: 4.5rem; line-height: 1.05; color: var(--white); }
+.service-head h2 .dim2 { color: rgba(255,255,255,.24); }
+.service-head .sub { position: absolute; left: 61rem; top: 7.5rem; width: 24rem; margin-top: 0;
+  font-size: 1.15rem; line-height: 1.35; color: rgba(255,255,255,.7); font-weight: 500; }
+
+/* pill button on the dark screen (live's .home-service-btn) */
+.svc-cta { position: absolute; left: 50%; transform: translateX(-50%); top: 55.3rem; width: 9.73rem; height: 2.98rem;
+  border: 1px solid rgba(255,255,255,.45); border-radius: 1.5rem; display: flex; align-items: center;
+  justify-content: center; color: #fff; font-size: .75rem; letter-spacing: .08em; text-transform: uppercase;
+  font-family: var(--font-mono); opacity: 0; }
 
 .service-cards { position: absolute; left: 0; top: 24rem; display: flex; gap: 2rem; padding-left: 66rem; }
 .svc-card { width: 26.25rem; flex: 0 0 auto; color: var(--white); }
@@ -49,8 +56,11 @@
 .svc-containers { position: absolute; inset: 0; pointer-events: none; }
 .svc-containers img { position: absolute; }
 
-/* dark backdrop for the cards zone (fade in with progress) */
-.service-dark { position: absolute; inset: 0; background: #111; opacity: 0; }
+/* dark backdrop for the cards zone (slides up from the bottom with progress) */
+.service-dark { position: absolute; inset: 0; background: #111; opacity: 1; transform: translateY(100%); }
+
+/* ground band the machine scene stands on (ported from live .home-service-land) */
+.service-land { position: absolute; left: 0; right: 0; top: 55.1rem; height: 5.62rem; background: #111; }
 
 /* button variant for light backgrounds */
 .btn-outline-dark { border: 1px solid rgba(17,17,17,.2); color: var(--black); }
