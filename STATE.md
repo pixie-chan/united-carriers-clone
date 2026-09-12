@@ -136,3 +136,10 @@ mid-states confirmed by screenshot at 1920. 1440 QA unchanged (y13000 4.5%, y141
 
 Note: at phone width (390px) the page is still desktop-only (rem scales to 3.6px, hero clips). Mobile pass
 remains a dedicated milestone; not a regression.
+
+---
+
+## Repo
+
+Public: https://github.com/pixie-chan/united-carriers-clone (created 2026-09-12, initial commit 3d08309,
+3336 files / 418 MB, remote byte-sum matches local exactly).
