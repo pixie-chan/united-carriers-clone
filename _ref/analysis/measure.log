@@ -1,0 +1,65 @@
+loader shots: ['t0300', 't1000', 't2500', 't5500']
+scrollH 28230 outline 35 textStyles 22
+canvases: [
+ {
+  "w": 900,
+  "h": 900,
+  "cssW": 900,
+  "cssH": 900,
+  "y": 0,
+  "cls": "home-hero-canvas",
+  "parentCls": "home-hero-globe"
+ },
+ {
+  "w": 1339,
+  "h": 753,
+  "cssW": 1339,
+  "cssH": 753,
+  "y": 3218,
+  "cls": "home-service-crane-sq",
+  "parentCls": "home-service-crane"
+ },
+ {
+  "w": 1045,
+  "h": 293,
+  "cssW": 1045,
+  "cssH": 294,
+  "y": 3030,
+  "cls": "home-service-truck-sq",
+  "parentCls": "home-service-truck-inner"
+ },
+ {
+  "w": 300,
+  "h": 150,
+  "cssW": 0,
+  "cssH": 0,
+  "y": 0,
+  "cls": "home-service-mb-crane-sq",
+  "parentCls": "home-service-mb-crane"
+ },
+ {
+  "w": 1440,
+  "h": 900,
+  "cssW": 1440,
+  "cssH": 900,
+  "y": 14160,
+  "cls": "",
+  "parentCls": "home-why-ocean-img"
+ },
+ {
+  "w": 2059,
+  "h": 318,
+  "cssW": 2060,
+  "cssH": 318,
+  "y": 27977,
+  "cls": "footer-logo-canvas-inner",
+  "parentCls": "footer-logo-canvas"
+ }
+]
+big svg 0 1065 bytes
+big svg 1 4341 bytes
+big svg 2 4336 bytes
+big svg 3 4343 bytes
+mobile scrollH 844
+DONE
+MEASURE-EXIT=0

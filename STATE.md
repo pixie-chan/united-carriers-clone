@@ -1,0 +1,138 @@
+# United Carriers clone: project state
+
+Purpose: an **editable replica base** (future edits: swap the ship for an airplane, fix bugs, hand parts
+to a human). Keep the rebuild code clean and documented. Resume phrase: "resume united carriers".
+
+## Layout
+
+- `site/` : THE REBUILD (own HTML/CSS/JS, editable). `index.html` (~66K),
+  `css/{site,sections,sections2}.css`, `js/{main,globe,sections,tail,why,chrome,cursor,frames}.js`,
+  `vendor/` (GSAP 3.13, ScrollTrigger, Lenis 1.3.11, three.js r184), `assets/{fonts,img,frames,video}`,
+  `data/` (globe-points, land-110m, airports, flights, frames-sequences).
+- `_ref/mirror/` : complete offline mirror of the real site, verified 1:1 (ANALYSIS.md §7).
+- `_ref/analysis/` : all tooling + evidence.
+- `ANALYSIS.md` : architecture, tokens, sections, animation inventory, verification results.
+
+## How to run
+
+    cd ~/projects/united-carriers-clone/site && python3 -m http.server 8898 --bind 0.0.0.0
+    cd ~/projects/united-carriers-clone/_ref/mirror && python3 -m http.server 8899 --bind 0.0.0.0
+
+- rebuild: http://127.0.0.1:8898/ (LAN: http://10.162.67.201:8898/), mirror: http://127.0.0.1:8899/unitedcarriers.com/index.html
+- Phone access: `sudo sh /tmp/uc-open-ports.sh` (recreate if /tmp cleared: two ufw allow lines for 8898/8899).
+
+## Status
+
+**Working (verified against fresh live captures, compare-ab.py):**
+
+1. Loader, hero + dot globe, intro, services (crane/truck frame scrub) as before.
+2. **Service tail** (NEW, ported from live's `.home-service-third-screen`): road + truck + reliability
+   block, geometry matches live within ~2px (road 653x560, truck stick/truck/rot all aligned, sub-items
+   at 989/13710). Entrance scrub + parking + scroll-velocity speedometer (`02 KM/H` HUD).
+3. **Why/ocean section** (NEW): sticky ocean, ship dolly (scale 1 -> .082, fitted scrub range
+   [15300,19800]), ship bob yoyo, cloud decor + 7-item cloud fly-in (timed to live pacing), text/items
+   reveals. Own three.js ocean shader (water-normal + equirect env + the site's overlay photo via
+   saturation blend + analytic wake anchored to the ship DOM). Section lands at 15060, page math matches
+   live (wrap 15060->21728).
+4. Chrome: header/topbar hide on scroll-down / show on scroll-up (as live); cursor parks at (0,0) at
+   rest like live (was center screen, 128px ring -> 4rem now).
+
+**Pixel diffs (fresh paired captures, diff>16 / diff>48):**
+- y0 55.3/12.4 (globe rotation phase), y1800 11.1/8.4 (intro reveal timings), y3220 33.7/32.9 (service
+  choreography), y13000 4.5/4.1, y14160 3.1/2.7 (tail), y15060 44.8/10.5 (ocean, animated phase).
+- why anchors: 17500 28.4/4.0, 19000 44.6/4.8, 19600 49.9/12.4, 20000 55.8/24.0 - remaining diff is
+  dominated by animated water/cloud phase, not placement.
+
+**Not built yet:**
+- testimonials (home-testi-wrap; the airplane section), partners marquee, insights, FAQ, footer
+  (CTA + footer logo canvas). Copy/structure for all in `_ref/analysis/measures/home-dom.html`;
+  extracts in `_ref/analysis/extracts/` (testi/partners/ins/faq/footer .pretty.html).
+- Mobile pass (never done).
+- Service choreography polish (first/second screens: live shows equipment order, cards later;
+  y3220 diff 33.7%).
+- Ocean fine-tuning: sun-glint character, moire at high zoom, wake side-foam fade; cloud item
+  contrast at mid-flight (20000 diff>48 24%).
+
+## Key learnings (ported sections)
+
+1. **The live site's html font-size is 1440/172.8 = 8.333px** (body 13.3333). Our rebuild uses
+   100vw/108 = 13.3333. All ported live values are rem-rescaled **x0.625** by build-port.py.
+2. **The real grid system is in an embedded <style> block (#5)**: `.container.grid` is a named-line
+   16-col grid (`[full-width-start] minmax(padding-inline,1fr) [content-start] repeat(16,...)`).
+   The webflow css's own `.container.grid {grid-template-columns:1fr}` is overridden by it.
+3. Webflow id rules (`#w-node-...{grid-area:...}`) do the per-element grid placement; they are ported.
+4. The live page's webflow badge ("Site of the Day", "Access all to ships") is 3rd-party injected, NOT
+   in the DOM snapshot - do not replicate; it accounts for part of raw diff.
+5. ScrollTrigger `start: 'top+=400vh top'` does NOT parse (vh unsupported) - it silently falls back to
+   a much earlier start. Use numeric scroll positions (this bug once made the whole cloud reveal play
+   5000px early).
+6. Two scrubbed timelines writing the same object property fight: last-updating wins per frame and can
+   freeze stale values. Keep one owner per property (wake scale now = st.shipScale * DOM wrapScale).
+
+## Tooling (`_ref/analysis/`)
+
+- `build-port.py` : regenerates `site/css/sections2.css` + `site/_tail_block.html` + `site/_why_block.html`
+  from the raw webflow css (media-aware extract, rem x0.625) + embedded style blocks. Re-runnable.
+- `wire-index.py` : idempotent index.html wiring (css link, speed hud, tail block, why block).
+- `fix-why-position.py` : one-time move of the why block after `</section>`.
+- `qa-rebuild.py` : rebuild shots [0,1800,3220,4200,13000] + diffs vs `verify/` (legacy).
+- `tail-check.py` : tail screenshots [13000,14160,14600] + diffs vs live.
+- `why-check.py` : why screenshots [14160..20000] + diffs vs `whyviews/live-*.png` + composites in `qaw/`.
+- `compare-ab.py` : fresh paired captures live-mirror vs rebuild at [0,1800,3220,13000,14160,15060].
+- `why-measure.py`, `why-sweep.py`, `tail-measure.py`, `tail-compare.py` : geometry probes.
+- `extracts/` : pretty-printed live DOM per section + ported css dumps + embedded.css.
+
+## Open threads / next steps (priority order)
+
+1. Build the remaining sections in order: testi -> partners -> insights -> FAQ -> footer (same
+   port pipeline: raw css extract -> build-port list, markup from extracts, JS from pretty/Home.js).
+2. After sections: mobile pass (media queries are already ported into sections2.css).
+3. Service choreography polish (first/second screens) to fix y3220.
+4. Ocean polish (glints/moire/wake).
+5. Re-run full QA (qa-rebuild + why-check + compare-ab) and update ANALYSIS.md numbers.
+
+Servers left running at pause unless the box restarts.
+
+## Session log 2026-09-12 (late): user-reported bug fixes
+
+User flagged: "the forklift and ship, and the last flight is totally bugged".
+
+1. **"forklift" = the Konecranes reach stacker, service screen 1.** Fixed three coupled issues:
+   - DOM containers (svc-containers imgs) were floating high + a wrong early y-shift animation; positions now
+     match live exactly (white 67.5rem/34.275rem, blue 67.5/47.775, orange 79.125/47.775; only a gentle exit drift).
+   - The crane canvas sat 127px too high (top 5.5rem -> 15.03rem = live's y200).
+   - The crane sequence ran over the wrong scroll window; now its own trigger [3820, 6970] linear (live's
+     first-screen top+100vh -> top+450vh), so the drawn frame matches the live's at a given scroll.
+   - Result: y3220 diff 33.7% -> 24.0%.
+2. **Ship wake was on the wrong side and blocky.** The live's stern is at the TOP (bow down) and the wake trails
+   ABOVE it; our shader drew below (bow side) and cut a hard rectangle. Wake now anchors to the ship's DOM box
+   (uShipTop/uShipHalfW/uShipHalfLen uniforms fed from the img rect each frame), trails above the stern as a
+   soft V with domain-warped speckle + density noise. Still less photoreal than the live's GPGPU wake sim
+   (document in open threads; further tuning = diminishing returns).
+3. **"last flight" = globe flight arcs.** Long flights (145/128deg) used linear lerp + normalize: the arc dove
+   off the great circle and floated past the limb. Now true great-circle slerp + altitude x0.22 (arcs hug the
+   globe) + airport pins r1.001/size .009 + dot cloud scaled 0.996 (no limb spill). Vision re-check: 9/10.
+4. Also: header/topbar hide distance fixed (children stick out below the box: hide by offsetHeight+190,
+   previously the logo+nav stayed visible on scroll).
+
+Final QA numbers at the time of writing (compare-ab.py): y0 55.2/12.4 (globe anim phase), y1800 11.1/8.4,
+y3220 24.0/22.4, y13000 4.5/4.1, y14160 3.1/2.7, y15060 46.7/11.4 (animated water).
+
+## Session log 2026-09-12 (late #2): viewport-relative triggers (critical lesson)
+
+User reported "animations aren't working at all" at their real window size. Root cause: several ScrollTriggers
+used HARDCODED scroll positions measured at the 1440x900 QA viewport. The page height scales with viewport
+(rem = 100vw/108), so at 1920x950 the page is 27470px tall and every hardcoded trigger fired ~1.33x too early:
+the crane sequence, tail entrance, ship dolly and cloud reveal were all FINISHED by the time the user reached
+the sections (looked frozen / "super bugged").
+
+RULE: never hardcode scroll positions in this project. Use function-based start/end computed from element
+positions + innerHeight (re-evaluated on ScrollTrigger refresh/resize). Fixed in sections.js (crane:
+svcTop+1vh..+4.5vh), tail.js (entrance: tailTop-1.105vh..+1.18vh; speed windows: sublist bottom - 0.625vh),
+why.js (ship dolly: wrapTop+0.267vh..+5.267vh; clouds: wrapTop+4vh..sectionBottom+1vh).
+
+Verified: ship dolly mid-flight at BOTH 1920x950 (width 446 mid) and 1440x900 (220 mid); crane/tail/clouds
+mid-states confirmed by screenshot at 1920. 1440 QA unchanged (y13000 4.5%, y14160 3.1%).
+
+Note: at phone width (390px) the page is still desktop-only (rem scales to 3.6px, hero clips). Mobile pass
+remains a dedicated milestone; not a regression.

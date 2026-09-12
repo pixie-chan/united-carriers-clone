@@ -1,0 +1,205 @@
+{
+ "type": "AirportsCollection",
+ "airports": [
+  {
+   "text": "LHR",
+   "size": 1,
+   "country": "UK",
+   "city": "London",
+   "lat": "53.8085",
+   "lng": "-2.7597"
+  },
+  {
+   "text": "FRA",
+   "size": 1,
+   "country": "Germany",
+   "city": "Frankfurt",
+   "lat": "51.0774",
+   "lng": "10.2704"
+  },
+  {
+   "text": "MAD",
+   "size": 1,
+   "country": "Spain",
+   "city": "Madrid",
+   "lat": "40.3207",
+   "lng": "-3.6242"
+  },
+  {
+   "text": "FCO",
+   "size": 1,
+   "country": "Italy",
+   "city": "Rome",
+   "lat": "42.6708",
+   "lng": "12.2690"
+  },
+  {
+   "text": "IST",
+   "size": 1,
+   "country": "Turkey",
+   "city": "Istanbul",
+   "lat": "39.1451",
+   "lng": "35.1172"
+  },
+  {
+   "text": "TLV",
+   "size": 1,
+   "country": "Israel",
+   "city": "Tel Aviv",
+   "lat": "31.4791",
+   "lng": "35.0010"
+  },
+  {
+   "text": "CAI",
+   "size": 1,
+   "country": "Egypt",
+   "city": "Cairo",
+   "lat": "26.4749",
+   "lng": "29.8610"
+  },
+  {
+   "text": "DOH",
+   "size": 1,
+   "country": "Qatar",
+   "city": "Doha",
+   "lat": "25.3210",
+   "lng": "51.1838"
+  },
+  {
+   "text": "RUH",
+   "size": 1,
+   "country": "Saudi Arabia",
+   "city": "Riyadh",
+   "lat": "19.0893",
+   "lng": "44.6413"
+  },
+  {
+   "text": "NBO",
+   "size": 1,
+   "country": "Kenya",
+   "city": "Nairobi",
+   "lat": "0.5955",
+   "lng": "37.7914"
+  },
+  {
+   "text": "CPT",
+   "size": 1,
+   "country": "South Africa",
+   "city": "Cape Town",
+   "lat": "-28.9233",
+   "lng": "25.1581"
+  },
+  {
+   "text": "JFK",
+   "size": 1,
+   "country": "USA",
+   "city": "New York",
+   "lat": "44.7557",
+   "lng": "-103.5725"
+  },
+  {
+   "text": "YYZ",
+   "size": 1,
+   "country": "Canada",
+   "city": "Toronto",
+   "lat": "60.4769",
+   "lng": "-96.3960"
+  },
+  {
+   "text": "MEX",
+   "size": 1,
+   "country": "Mexico",
+   "city": "Mexico City",
+   "lat": "23.9134",
+   "lng": "-102.2231"
+  },
+  {
+   "text": "GRU",
+   "size": 1,
+   "country": "Brazil",
+   "city": "Sao Paulo",
+   "lat": "-10.6555",
+   "lng": "-53.1725"
+  },
+  {
+   "text": "EZE",
+   "size": 1,
+   "country": "Argentina",
+   "city": "Buenos Aires",
+   "lat": "-34.7366",
+   "lng": "-64.7543"
+  },
+  {
+   "text": "BOG",
+   "size": 1,
+   "country": "Colombia",
+   "city": "Bogota",
+   "lat": "3.9163",
+   "lng": "-73.0735"
+  },
+  {
+   "text": "SCL",
+   "size": 1,
+   "country": "Chile",
+   "city": "Santiago",
+   "lat": "-43.3109",
+   "lng": "-74.1779"
+  },
+  {
+   "text": "NRT",
+   "size": 1,
+   "country": "Japan",
+   "city": "Tokyo",
+   "lat": "37.5367",
+   "lng": "137.7123"
+  },
+  {
+   "text": "HKG",
+   "size": 1,
+   "country": "Hong Kong",
+   "city": "Hong Kong",
+   "lat": "22.3080",
+   "lng": "113.9185"
+  },
+  {
+   "text": "BKK",
+   "size": 1,
+   "country": "Thailand",
+   "city": "Bangkok",
+   "lat": "14.9807",
+   "lng": "101.0025"
+  },
+  {
+   "text": "SIN",
+   "size": 1,
+   "country": "Singapore",
+   "city": "Singapore",
+   "lat": "1.3644",
+   "lng": "103.9915"
+  },
+  {
+   "text": "SYD",
+   "size": 1,
+   "country": "Australia",
+   "city": "Sydney",
+   "lat": "-25.7631",
+   "lng": "134.3141"
+  },
+  {
+   "text": "AKL",
+   "size": 1,
+   "country": "New Zealand",
+   "city": "Auckland",
+   "lat": "-41.5511",
+   "lng": "172.9514"
+  },
+  {
+   "text": "PEK",
+   "size": 1,
+   "country": "China",
+   "city": "Beijing",
+   "lat": "36.6834",
+   "lng": "103.4525"
+  }
+ ]
+}

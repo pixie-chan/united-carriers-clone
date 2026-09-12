@@ -1,0 +1,329 @@
+.home-service-truck { z-index:2;opacity:0;flex-flow:column;justify-content:flex-end;align-items:flex-start;margin-bottom:-.2rem;display:flex;position:relative }
+
+.home-service-truck-inner { grid-template-rows:auto auto;grid-template-columns:1fr 1fr;grid-auto-columns:1fr;width:120.2rem;position:relative;transform:translate(calc(50vw - 52.7%)) }
+
+.home-service-label { opacity:0;font-family:var(--font--heading);color:#11111114;text-transform:uppercase;white-space:nowrap;width:max-content;height:min(30rem,28vmin);margin-bottom:1vmin;transform:translate(100vw) }
+
+.home-service-wrap { position:relative }
+
+.home-service { z-index:2;background-color:var(--_color---bg--main);contain:paint;margin-top:-35vh;position:relative }
+
+.home-service-stick-wrap { color:var(--_color---content--main);position:relative }
+
+.home-service-stick-wrap.third-screen { flex-flow:column;justify-content:flex-end;height:100%;display:flex }
+
+.home-service-front { z-index:2;grid-template-rows:auto;grid-template-columns:minmax(1px,1fr);grid-auto-columns:1fr;height:40vh;display:grid;position:relative }
+
+.home-service-empty-block { height:100vh }
+
+.home-service-title.sub { pointer-events:auto }
+
+.home-service-main { background-color:var(--_color---bg--main);transform-origin:0 -20vh;min-height:60vh;color:var(--_color---content--main);--_color---bg--main:var(--_color---m-black);--_color---content--main:var(--_color---m-white);--_color---content--note:#ffffff3d;--_color---border--bold:#ffffff52;--_color---bg--sf-2:var(--_color---m-white);--_color---border--highlight:var(--_color---m-white);--_color---secondary:#f50;--_color---m-white:white;--_color---content--soft:#fff9;--_color---bg--sf-1:#1a1a1a;--_color---border--light:#ffffff14;--_color---content--brand:var(--_color---primary);--_color---border--main:#ffffff29;--_color---content--disable:#ffffff29;--_color---content--sub:#ffffffb3;--_color---m-black:#111;--_color---content--black\<deleted\|variable-6e7d8137-8713-9ff4-5cea-f92e6216a872\>:black;--_color---bg--brand:var(--_color---primary);--_color---primary:#0016cb;flex-flow:column;justify-content:flex-start;align-items:center;width:max-content;padding-top:min(10rem,9.25926vmin);padding-bottom:min(4.2rem,3.76007vmin);display:flex;position:relative }
+
+.home-service-stick { position:sticky;bottom:0 }
+
+.home-service-stick.third-screen { flex-flow:column;justify-content:space-between;height:100vh;margin-top:calc(31.2rem - min(16rem,14.5455vmin));padding-top:min(16rem,14.5455vmin);padding-bottom:min(9.5rem,8.63636vmin);display:flex }
+
+.home-service-stick.second-screen { position:sticky;top:calc(60vh - min(10rem,9.25926vmin));bottom:auto }
+
+.home-service-main-inner { z-index:1;grid-column-gap:56.2rem;justify-content:flex-start;align-items:flex-start;margin-bottom:min(7.8rem,6.98299vmin);padding-top:0;position:relative }
+
+.home-service-text-wrap { width:100vw;padding-right:var(--container--padding);padding-left:var(--container--padding);grid-column-gap:var(--container--column-gap);grid-template-rows:auto;grid-template-columns:minmax(1px,1fr) minmax(1px,1fr) minmax(1px,1fr) minmax(1px,1fr) minmax(1px,1fr) minmax(1px,1fr) minmax(1px,1fr) minmax(1px,1fr) minmax(1px,1fr) minmax(1px,1fr) minmax(1px,1fr) minmax(1px,1fr) minmax(1px,1fr) minmax(1px,1fr) minmax(1px,1fr) minmax(1px,1fr);grid-auto-columns:1fr;display:grid }
+
+.home-service-sub { color:var(--_color---content--sub) }
+
+.home-service-cms { transform-origin:50% 0 }
+
+.home-service-list { justify-content:flex-start;align-items:flex-start;display:flex }
+
+.home-service-item { border-left:var(--border--size)solid var(--_color---border--light);flex-flow:column;flex:none;justify-content:flex-start;align-items:flex-start;width:42rem;padding-left:4rem;display:flex }
+
+.home-service-item-ic { justify-content:center;align-items:center;width:6.4rem;height:6.4rem;margin-bottom:2.4rem;display:flex }
+
+.home-service-item-title { margin-bottom:2rem }
+
+.home-service-item-desc { max-width:30.7rem;color:var(--_color---content--soft) }
+
+.home-service-third-screen { z-index:3;pointer-events:none;grid-template-rows:auto;grid-template-columns:1fr;grid-auto-columns:1fr;display:grid;position:relative }
+
+.home-service-second-screen { z-index:3;position:relative }
+
+.home-service-road { background-color:var(--_color---bg--main);width:78.4rem;position:relative }
+
+.home-service-road-center { opacity:1;flex:none;width:100% }
+
+.home-service-road-bot { background-color:#0c0c0c;flex:1;justify-content:center;align-items:center;width:24.4rem;height:400%;margin-top:-.1rem;margin-left:32.9rem;display:flex;position:absolute;top:66.3rem;left:52.5665% }
+
+.home-service-road-ver-line { background-image:url(../6a44eec1ed1af2c4c403e714_road-line-ver.svg);background-position:50% 0;background-repeat:repeat-y;background-size:100%;width:100%;height:100% }
+
+.home-service-btn { cursor:pointer }
+
+.home-service-desc { width:calc(var(--container--one-column)*4 + var(--container--column-gap)*3) }
+
+.home-service-sub-list { z-index:2;grid-row-gap:10rem;flex-flow:column;justify-content:space-between;align-items:stretch;max-width:34.8rem;height:150vh;padding-bottom:min(9.5rem,8.63636vmin);display:flex;position:relative }
+
+.home-service-sub-item { border-bottom:var(--border--size)solid var(--_color---border--light);flex-flow:column;justify-content:flex-start;align-items:flex-start;padding-bottom:10rem;display:flex }
+
+.home-service-sub-ic { flex:none;width:6.4rem;height:6.4rem;margin-bottom:2rem }
+
+.home-service-sub-title { margin-bottom:2rem }
+
+.home-service-truck-full { opacity:0;pointer-events:none;position:relative }
+
+.home-service-truck-car { z-index:2;width:100%;height:100%;position:relative }
+
+.home-service-first-screen { z-index:2;position:relative }
+
+.home-service-crane { background-color:var(--_color---m-white);flex-flow:column;justify-content:flex-end;height:100%;display:flex;position:relative }
+
+.home-service-scene { contain:paint;width:100%;height:100vh;position:relative }
+
+.home-service-crane-static { z-index:1;aspect-ratio:16/9;width:93%;position:absolute;bottom:-16.4rem;left:-17.4% }
+
+.home-service-crane-static.cont-w { z-index:2;pointer-events:none;clip-path:inset(34.5% 2.6% 41.8% 86%);will-change:opacity }
+
+.home-service-crane-static.o-car { z-index:2;will-change:opacity }
+
+.home-service-crane-static.out-bot,.home-service-crane-static.out-top { z-index:3;opacity:0;pointer-events:none;transform-origin:50% 100%;transform:translateY(-.96rem)scale(.9) }
+
+.home-service-crane-sq { z-index:2;aspect-ratio:16/9;opacity:0;pointer-events:none;will-change:opacity;width:93%;padding-bottom:0;padding-right:0;position:absolute;bottom:-16.4rem;left:-17.4% }
+
+.home-service-cont-wrap { z-index:4;opacity:1;filter:blur(.04rem)brightness(97%);flex-flow:column;grid-template-rows:auto;grid-template-columns:1fr 1fr;grid-auto-columns:1fr;width:21.4%;display:grid;position:absolute;bottom:.2rem;left:62.5% }
+
+.home-service-cont-item.white { opacity:0 }
+
+.home-service-land { background-color:var(--_color---m-black);width:100%;height:min(10rem,9.25926vmin) }
+
+.home-service-truck-cont { z-index:1;opacity:0;filter:blur(.5px)brightness(98%);width:100%;height:100%;position:relative }
+
+.home-service-btn-wrap { z-index:1;justify-content:center;align-items:center;width:100vw;display:flex;position:absolute;bottom:min(8rem,7.4vmin);left:0 }
+
+.home-service-truck-wheel { z-index:3;opacity:1;width:100%;height:100%;position:relative;overflow:hidden }
+
+.home-service-truck-wheel-i { aspect-ratio:1;filter:blur(.5px)brightness(98%);width:7.07155%;position:absolute;bottom:0 }
+
+.home-service-truck-wheel-i.wheel-1 { right:5.5% }
+
+.home-service-truck-wheel-i.wheel-2 { width:6.22196%;right:29.1% }
+
+.home-service-truck-wheel-i.wheel-3 { width:6.22196%;right:62.9% }
+
+.home-service-truck-wheel-i.wheel-4 { width:6.22196%;right:70.4% }
+
+.home-service-truck-wheel-i.wheel-5 { width:6.22196%;right:78.3% }
+
+.home-service-truck-wheel-back { width:100%;height:100%;position:absolute;top:0;left:0;overflow:hidden;-webkit-mask:url(data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%201114%20257%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M228.791%20191C230.288%20192.069%20233.611%20195.788%20235.15%20198.354C236.69%20200.919%20241.351%20209.687%20243.489%20213.749H249.903V209.9H256.318V191.001H409.5L417.963%20234.916H719.443C719.443%20228.288%20721.111%20213.107%20727.782%20205.41C736.121%20195.788%20738.974%20191.643%20759.5%20191.001C779.045%20190.39%20784.405%20203.692%20785.946%20206.907C786.023%20207.066%20786.094%20207.213%20786.154%20207.334C786.347%20207.72%20786.598%20208.194%20786.893%20208.748L786.894%20208.75C788.553%20211.877%20791.576%20217.572%20793.21%20224.653V241.331H804.756V256.194H165.232V249.67L168.439%20248.387L169.081%20232.992L177%20191.001L228.791%20191Z%22%20fill%3D%22black%22%2F%3E%3C%2Fsvg%3E);mask:url(data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%201114%20257%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M228.791%20191C230.288%20192.069%20233.611%20195.788%20235.15%20198.354C236.69%20200.919%20241.351%20209.687%20243.489%20213.749H249.903V209.9H256.318V191.001H409.5L417.963%20234.916H719.443C719.443%20228.288%20721.111%20213.107%20727.782%20205.41C736.121%20195.788%20738.974%20191.643%20759.5%20191.001C779.045%20190.39%20784.405%20203.692%20785.946%20206.907C786.023%20207.066%20786.094%20207.213%20786.154%20207.334C786.347%20207.72%20786.598%20208.194%20786.893%20208.748L786.894%20208.75C788.553%20211.877%20791.576%20217.572%20793.21%20224.653V241.331H804.756V256.194H165.232V249.67L168.439%20248.387L169.081%20232.992L177%20191.001L228.791%20191Z%22%20fill%3D%22black%22%2F%3E%3C%2Fsvg%3E) }
+
+.home-service-main-road { width:300vw;height:var(--road-height);position:absolute;left:0 }
+
+.home-service-main-road.bot { z-index:2;background-color:var(--_color---content--main);margin-bottom:-1px;bottom:0 }
+
+.home-service-main-road.top { background-color:var(--_color---m-black);margin-bottom:-1px;bottom:100% }
+
+.home-service-road-big { pointer-events:none;width:420vw;height:60vh;left:100%;top:calc((min(10rem,9.25926vmin) + var(--road-height))*-1);position:absolute }
+
+.home-service-road-big-img { background-color:var(--_color---m-black);transform-origin:50% 0;background-image:url(../6a44eec1ed1af2c4c403e63d_road-line-big.svg);background-position:0%;background-repeat:repeat-x;background-size:auto 100%;width:100%;height:100%;position:absolute;top:0;left:0 }
+
+.home-service-truck-sq { z-index:3;aspect-ratio:2880/809;opacity:0;transform-origin:0%;width:100%;padding-bottom:0;padding-right:0;position:absolute;bottom:-9%;left:11%;transform:scale(1.0435) }
+
+.home-service-road-inner { z-index:2;width:100%;margin-left:32.9rem;position:relative }
+
+.home-service-road-right { z-index:2;background-color:#0c0c0c;flex:1;justify-content:center;align-items:center;width:100%;height:24.48rem;margin-left:-1px;display:flex;position:absolute;top:23.85rem;left:calc(100% + 32.9rem);transform:scaleX(-1) }
+
+.home-service-road-hor-line { background-image:url(../6a44eec1ed1af2c4c403e63d_road-line-big.svg);background-position:100%;background-repeat:repeat-x;background-size:auto 100%;width:100%;height:100% }
+
+.home-service-road-left { background-color:#0c0c0c;flex:none;justify-content:center;align-items:center;width:33rem;height:100%;display:flex;position:relative }
+
+.home-service-road-wrap { position:sticky;top:20vh }
+
+.home-service-road-stick { height:100vh }
+
+.home-service-road-left-wrap { z-index:1;background-color:var(--_color---m-white);flex:1;justify-content:flex-start;align-items:center;width:100vw;height:24.4rem;display:flex;position:absolute;top:0;left:0 }
+
+.home-service-road-left-white { background-color:var(--_color---bg--main);flex:1;height:100%;margin-top:-2px }
+
+.home-service-new-truck { z-index:2;aspect-ratio:2880/809;transform-origin:0 0;justify-content:flex-start;align-items:center;width:78.2675rem;display:flex;position:absolute;top:calc(-32.5rem - 50%);transform:translateY(-50%) }
+
+.home-service-road-main { z-index:1;position:relative }
+
+.home-service-sub-content { margin-top:-100vh;padding-top:calc(10vh + 54.3rem) }
+
+.home-service-new-truck-inner { justify-content:center;align-items:center;width:100%;height:100%;display:flex }
+
+.home-service-new-truck-inner.only-car,.home-service-new-truck-inner.container-truck { transform-origin:70% }
+
+.home-service-new-truck-wrap { z-index:2;opacity:0;width:98.5rem;margin-bottom:-100vh;position:relative }
+
+.home-service-new-truck-rot { aspect-ratio:1;width:1rem;height:1rem;margin-bottom:-1rem;margin-left:-1rem;position:absolute;transform:rotate(0) }
+
+.home-service-new-truck-stick { aspect-ratio:1;flex-flow:column;grid-template-rows:auto auto;grid-template-columns:1fr 1fr;grid-auto-columns:1fr;justify-content:flex-end;width:65rem;margin-left:auto;display:flex;position:sticky;top:calc(50vh - 32.5rem) }
+
+.home-service-truck-car-wrap { grid-template-rows:auto;grid-template-columns:minmax(1px,1fr);grid-auto-columns:1fr;width:100%;height:100%;display:grid;position:absolute;top:0%;left:13.5% }
+
+.home-service-sub-wrap { pointer-events:auto;margin-top:75vh }
+
+.home-service-third-screen-copy { z-index:3;grid-template-rows:auto;grid-template-columns:1fr;grid-auto-columns:1fr;margin-top:-200vh;display:grid;position:relative }
+
+.home-service-mb { display:none }
+
+.home-service-mb-empty-block { height:100vh }
+
+.home-service-speed { z-index:10;margin-left:var(--container--padding);color:var(--_color---content--soft);mix-blend-mode:difference;--_color---bg--main:var(--_color---m-black);--_color---content--main:var(--_color---m-white);--_color---content--note:#ffffff3d;--_color---border--bold:#ffffff52;--_color---bg--sf-2:var(--_color---m-white);--_color---border--highlight:var(--_color---m-white);--_color---secondary:#f50;--_color---m-white:white;--_color---content--soft:#fff9;--_color---bg--sf-1:#1a1a1a;--_color---border--light:#ffffff14;--_color---content--brand:var(--_color---primary);--_color---border--main:#ffffff29;--_color---content--disable:#ffffff29;--_color---content--sub:#ffffffb3;--_color---m-black:#111;--_color---content--black\<deleted\|variable-6e7d8137-8713-9ff4-5cea-f92e6216a872\>:black;--_color---bg--brand:var(--_color---primary);--_color---primary:#0016cb;width:calc(var(--container--one-column) + var(--container--column-gap));position:sticky;top:8.4rem;overflow:hidden }
+
+.home-service-speed-inner { grid-column-gap:.4rem;grid-row-gap:.4rem;margin-left:.4rem;transition:transform .35s;display:flex;transform:translateY(100%) }
+
+.home-service-speed-inner.active { transform:translate(0) }
+
+.home-service-speed-number { height:1.8rem;display:flex;overflow:hidden }
+
+@media screen and (max-width:991px) {
+
+  .home-service-truck-inner { width:69rem }
+
+  .home-service-label { width:max-content;height:28vh }
+
+  .home-service-title { width:calc(var(--container--one-column)*5 + var(--container--column-gap)*3) }
+
+  .home-service-title.sub { width:auto }
+
+  .home-service-stick.third-screen { grid-row-gap:3.2rem;justify-content:flex-end;align-items:stretch;margin-top:-80% }
+
+  .home-service-main-inner { grid-column-gap:39.6rem;grid-row-gap:7.2rem }
+
+  .home-service-text-wrap { justify-content:space-between;display:flex }
+
+  .home-service-sub { width:calc(var(--container--one-column)*3 + var(--container--column-gap)*3) }
+
+  .home-service-item { width:50rem;padding-left:6rem }
+
+  .home-service-road { width:55.367rem }
+
+  .home-service-road-bot { width:17.23rem;height:430%;margin-left:11.75rem;top:46.8rem }
+
+  .home-service-desc { width:calc(var(--container--one-column)*4 + var(--container--column-gap)*3) }
+
+  .home-service-desc.sub { width:auto }
+
+  .home-service-sub-list { height:100vh }
+
+  .home-service-crane-static,.home-service-crane-sq { bottom:-9.4rem }
+
+  .home-service-road-inner { margin-left:11.7rem }
+
+  .home-service-road-right { height:17.23rem;top:16.91rem;left:calc(100% + 11.7rem) }
+
+  .home-service-road-left { width:11.8rem }
+
+  .home-service-road-left-wrap { height:17.23rem }
+
+  .home-service-new-truck { aspect-ratio:2880/809;width:74.8816rem;top:calc(-28rem - 50%) }
+
+  .home-service-new-truck-wrap { opacity:0;width:58rem }
+
+  .home-service-new-truck-stick { width:56rem;top:calc(50vh - 28rem) }
+
+}
+
+@media screen and (max-width:767px) {
+
+  .heading.h6,.heading.h6.home-service-item-title-mb h3 { font-size:1.6rem;line-height:1.2 }
+
+  .home-service { display:none }
+
+  .home-service-list { grid-row-gap:3.2rem;flex-flow:column }
+
+  .home-service-item { border-bottom:var(--border--size)solid var(--_color---border--light);border-left-style:none;width:auto;padding-bottom:3.2rem;padding-left:0 }
+
+  .home-service-item-ic { width:4rem;height:4rem;margin-bottom:3.2rem }
+
+  .home-service-item-title { color:var(--_color---content--main);margin-bottom:1.2rem }
+
+  .home-service-sub-list { grid-row-gap:3.2rem;max-width:none;height:auto;padding-bottom:0 }
+
+  .home-service-sub-item { padding-bottom:3.2rem }
+
+  .home-service-sub-ic { width:4rem;height:4rem }
+
+  .home-service-sub-title { color:var(--_color---content--main) }
+
+  .home-service-sub-desc { color:var(--_color---content--sub) }
+
+  .home-service-land { height:min(10rem,9.25926vmin) }
+
+  .home-service-sub-wrap { margin-top:0 }
+
+  .home-service-mb { z-index:2;contain:paint;display:block;position:relative }
+
+  .home-service-mb-first-screen { position:relative }
+
+  .home-service-mb-stick-wrap { background-color:var(--_color---m-black) }
+
+  .home-service-mb-empty-block.first-screen { height:100svh }
+
+  .home-service-mb-empty-block.second-screen { background-color:var(--_color---bg--main);--_color---bg--main:var(--_color---m-black);--_color---content--main:var(--_color---m-white);--_color---content--note:#ffffff3d;--_color---border--bold:#ffffff52;--_color---bg--sf-2:var(--_color---m-white);--_color---border--highlight:var(--_color---m-white);--_color---secondary:#f50;--_color---m-white:white;--_color---content--soft:#fff9;--_color---bg--sf-1:#1a1a1a;--_color---border--light:#ffffff14;--_color---content--brand:var(--_color---primary);--_color---border--main:#ffffff29;--_color---content--disable:#ffffff29;--_color---content--sub:#ffffffb3;--_color---m-black:#111;--_color---content--black\<deleted\|variable-6e7d8137-8713-9ff4-5cea-f92e6216a872\>:black;--_color---bg--brand:var(--_color---primary);--_color---primary:#0016cb;width:100%;height:200svh;display:none }
+
+  .home-service-mb-stick.first-screen { z-index:3;flex-flow:column;justify-content:flex-start;height:300svh;display:flex;position:sticky;top:0 }
+
+  .home-service-mb-land { width:100%;height:100svh;margin-bottom:calc(-200svh - min(15.3rem,21.4286svh));position:relative }
+
+  .home-service-mb-land-pos { z-index:1;position:relative }
+
+  .home-service-mb-cont-wrap { z-index:2;transform-origin:0 100%;grid-template-rows:auto;grid-template-columns:1fr 1fr;grid-auto-columns:1fr;width:14.2rem;display:grid;position:absolute;bottom:0;left:2.7rem }
+
+  .home-service-mb-cont-wrap.main { grid-area:unset;background-color:#0000 }
+
+  .home-service-mb-cont-wrap.placeholder { opacity:0;pointer-events:none;bottom:-1rem;overflow:hidden }
+
+  .home-service-mb-cont-item { transform:scaleX(-1) }
+
+  .home-service-mb-cont-item.white { opacity:0;pointer-events:none }
+
+  .home-service-mb-label { padding-right:var(--container--padding);padding-left:var(--container--padding);color:#ffffff0f;width:max-content;height:min(15.3rem,21.4286svh);margin-top:auto;position:sticky;bottom:min(10rem,14svh) }
+
+  .home-service-mb-sq-stick { flex-flow:column;justify-content:flex-start;height:100svh;display:flex;position:sticky;top:0 }
+
+  .home-service-mb-crane-static { width:100%;height:100%;position:absolute;top:0;left:0 }
+
+  .home-service-mb-crane-static.cont-w { z-index:2;clip-path:inset(34.3% 62.5% 41.6% 23.1%) }
+
+  .home-service-mb-crane-static.o-car { z-index:1 }
+
+  .home-service-mb-crane-static.top-head { z-index:3 }
+
+  .home-service-mb-crane-static.top-body { z-index:2;transform-origin:30% }
+
+  .home-service-mb-crane-static.top { z-index:3;opacity:0;pointer-events:none;transform-origin:0%;transform:translate(-15%)scale(.95) }
+
+  .home-service-mb-crane-static.top-cont { z-index:2;transform-origin:30% }
+
+  .home-service-mb-sq-stick-wrap { z-index:2;position:relative }
+
+  .home-service-mb-second-screen { z-index:0;padding-right:var(--container--padding);grid-row-gap:9.6rem;background-color:var(--_color---bg--main);--_color---bg--main:var(--_color---m-black);--_color---content--main:var(--_color---m-white);--_color---content--note:#ffffff3d;--_color---border--bold:#ffffff52;--_color---bg--sf-2:var(--_color---m-white);--_color---border--highlight:var(--_color---m-white);--_color---secondary:#f50;--_color---m-white:white;--_color---content--soft:#fff9;--_color---bg--sf-1:#1a1a1a;--_color---border--light:#ffffff14;--_color---content--brand:var(--_color---primary);--_color---border--main:#ffffff29;--_color---content--disable:#ffffff29;--_color---content--sub:#ffffffb3;--_color---m-black:#111;--_color---content--black\<deleted\|variable-6e7d8137-8713-9ff4-5cea-f92e6216a872\>:black;--_color---bg--brand:var(--_color---primary);--_color---primary:#0016cb;padding-bottom:200svh;padding-left:calc(var(--container--one-column) + var(--container--column-gap) + var(--container--padding));flex-flow:column;display:flex;position:relative }
+
+  .home-service-mb-title { color:var(--_color---content--main);margin-bottom:4.8rem;position:relative }
+
+  .home-service-mb-desc { max-width:25rem;color:var(--_color---content--sub);margin-bottom:4rem }
+
+  .home-service-mb-sq-stick-inner { width:100%;position:relative }
+
+  .home-service-mb-land-bg { z-index:2;background-color:var(--_color---m-white);width:100%;height:calc(100svh + 1rem);position:absolute;bottom:-1rem;left:0% }
+
+  .home-service-mb-crane-df { opacity:1;height:34.4rem;position:absolute;bottom:-6.1rem;left:-1.3rem }
+
+  .home-service-mb-crane-sq { z-index:1;opacity:0;pointer-events:none;transform-origin:0%;width:100%;height:100%;padding-bottom:0;padding-right:0;position:absolute;top:0;left:0 }
+
+  .home-service-mb-sq-stick-bg { z-index:3;background-color:var(--_color---m-black);width:100%;height:calc(100svh - 34.4rem);position:absolute;top:100%;left:0 }
+
+  .home-service-mb-crane { aspect-ratio:1240/880;contain:paint;height:34.4rem;position:relative;transform:translate(-1.3rem,6.1rem) }
+
+  .home-service-mb-truck-wrap { z-index:1;margin-top:-100vh;position:relative }
+
+  .home-service-mb-truck-stick { aspect-ratio:76/321;grid-template-rows:auto;grid-template-columns:minmax(1px,1fr);grid-auto-columns:1fr;height:32.1rem;margin-bottom:-100svh;display:grid;position:sticky;top:0;left:0 }
+
+  .home-service-mb-truck { width:100%;height:100% }
+
+  .home-service-mb-road { opacity:0;pointer-events:none;justify-content:space-between;display:flex;position:absolute;inset:0% -2rem -100svh }
+
+  .home-service-mb-road-line { opacity:.7;background-image:url(../6a44eec1ed1af2c4c403e97d_road-line-mb.png);background-position:0 0;background-repeat:repeat-y;background-size:100%;width:.4rem;height:100% }
+
+}

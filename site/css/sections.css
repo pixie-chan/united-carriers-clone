@@ -1,0 +1,74 @@
+/* Sections 2-3: intro statement + services scroll experience. Values measured from live. */
+
+/* ============ intro ============ */
+.home-intro { position: relative; z-index: 5; background: #fff; height: 107.7rem; margin-top: -33.83rem; }
+.home-intro-inner { position: relative; height: 100%; }
+.intro-left { position: absolute; left: 2.5rem; top: 0; width: 38.25rem; height: 100%; }
+.intro-left-inner { position: sticky; top: 0; height: 100vh; }
+.intro-h2 { position: absolute; left: 0; top: 42.1rem; width: 38.25rem;
+  font-family: var(--font-heading); font-weight: 700; text-transform: uppercase;
+  font-size: 4.5rem; line-height: 1.05; color: var(--black); }
+.intro-h2 .dim { color: #b9b9b9; }
+.intro-img { position: absolute; left: 0; top: 26.6rem; width: 18.4rem; height: 11.6rem; object-fit: cover; }
+.intro-copy { position: absolute; left: 67.65rem; top: 0; width: 38.25rem;
+  font-size: 1.75rem; line-height: 1.2; color: var(--black); font-weight: 500; }
+.intro-copy2 { position: absolute; left: 67.65rem; top: 14.8rem; width: 38.25rem;
+  font-size: 1.2rem; line-height: 1.35; color: rgba(17,17,17,.72); font-weight: 500; }
+.intro-btn { position: absolute; left: 67.65rem; top: 20.6rem; }
+.intro-stats { position: absolute; left: 67.65rem; top: 35.8rem; width: 38.25rem; }
+.intro-stat-label { font-size: 1.2rem; line-height: 1.2; color: var(--black); font-weight: 500;
+  border-top: var(--border); padding-top: 1.2rem; }
+.stat { border-top: var(--border); padding-top: 1.2rem; margin-top: 1.4rem; }
+.stat-value { font-family: var(--font-heading); font-weight: 700; font-size: 10rem; line-height: 1.05;
+  color: var(--black); letter-spacing: -.01em; }
+.stat-name { font-size: 1rem; color: rgba(17,17,17,.72); margin-top: .4rem; }
+.stat + .stat { margin-top: 6.9rem; }
+
+/* ============ services ============ */
+.home-service { position: relative; height: 910.5rem; margin-top: -23.63rem; background: #fff; }
+.service-sticky { position: sticky; top: 0; height: 100vh; overflow: hidden; }
+
+.service-crane { position: absolute; left: -18.8rem; top: 15.03rem; width: 100.4rem; height: 56.5rem; }
+.service-truck { position: absolute; left: 122rem; top: 60rem; width: 78.4rem; height: 22rem; }
+.service-speed { position: absolute; left: 2.8rem; top: 54rem; font-family: var(--font-mono);
+  font-size: .75rem; letter-spacing: .05em; text-transform: uppercase; color: rgba(17,17,17,.6);
+  display: flex; gap: .4rem; }
+.service-head { position: absolute; left: 2.5rem; top: 6rem; width: 34rem; }
+.service-head h2 { font-family: var(--font-heading); font-weight: 700; text-transform: uppercase;
+  font-size: 4.5rem; line-height: 1.05; color: var(--black); }
+.service-head .sub { margin-top: 2.2rem; font-size: 1.2rem; line-height: 1.4; color: rgba(17,17,17,.72); font-weight: 500; }
+.service-head .sub + .sub { margin-top: 1.2rem; }
+
+.service-cards { position: absolute; left: 0; top: 24rem; display: flex; gap: 2rem; padding-left: 66rem; }
+.svc-card { width: 26.25rem; flex: 0 0 auto; color: var(--white); }
+.svc-card h3 { font-family: var(--font-heading); font-weight: 700; text-transform: uppercase;
+  font-size: 1.8rem; line-height: 1.25; }
+.svc-card p { margin-top: 1.2rem; font-size: 1rem; line-height: 1.45; color: rgba(255,255,255,.72); }
+.svc-card .rule { height: 1px; background: rgba(255,255,255,.24); margin-bottom: 1.2rem; }
+
+.svc-containers { position: absolute; inset: 0; pointer-events: none; }
+.svc-containers img { position: absolute; }
+
+/* dark backdrop for the cards zone (fade in with progress) */
+.service-dark { position: absolute; inset: 0; background: #111; opacity: 0; }
+
+/* button variant for light backgrounds */
+.btn-outline-dark { border: 1px solid rgba(17,17,17,.2); color: var(--black); }
+.btn-outline-dark:hover { background: var(--black); color: var(--white); }
+
+/* stat suffix (+ / %) */
+.stat-value .suffix { font-size: .45em; vertical-align: .55em; letter-spacing: 0; }
+
+/* milestones */
+.home-milestones { position: relative; background: #fff; height: 132rem; margin-top: -67.5rem; z-index: 2; }
+.milestones-inner { position: relative; height: 100%; }
+.milestones-h2 { position: absolute; left: 2.5rem; top: 66rem; width: 38.25rem;
+  font-family: var(--font-heading); font-weight: 700; text-transform: uppercase;
+  font-size: 4.5rem; line-height: 1.05; color: var(--black); }
+.milestone { position: absolute; left: 67.65rem; width: 38.25rem; border-top: var(--border); padding-top: 1.2rem; }
+.milestone h3 { font-family: var(--font-heading); font-weight: 700; text-transform: uppercase;
+  font-size: 1.8rem; line-height: 1.25; color: var(--black); }
+.milestone p { margin-top: .9rem; font-size: 1rem; line-height: 1.45; color: rgba(17,17,17,.72); font-weight: 500; }
+.milestone.m1 { top: 66rem; }
+.milestone.m2 { top: 79rem; }
+.milestone.m3 { top: 92rem; }
