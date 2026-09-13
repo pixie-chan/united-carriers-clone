@@ -281,3 +281,15 @@ that were never probed or committed. This pass verified, completed and committed
   strut lines); insights block now collapses inter-tag whitespace (>\s+<). Live html is minified.
 - Insights block links: our hrefs kept the extract's absolute "/insights/..." (live mirror rewrote the
   extract's originals to relative "insights.html"); left as-is, revisit for local link fidelity.
+
+## Session log 2026-09-13 (continuation 4): faq built
+
+- FAQ BUILT + verified: geometry within 1px (wrap h 711 vs 712), reveal states identical (title mask
+  style lifecycle matches live exactly: width 249 + overflow hidden + height 63 during approach, cleared
+  at rest), accordion click behavior identical on both sides (one-open, toggle, reopen). Pixel diff
+  1.1-2.9 in valid ranges (deeper phases clamp-differs until CTA/footer exist).
+- Title reveal = split-line MASK slide (live splits the heading, clips it, slides the line up); ported
+  manually in faq.js (wrap span + yPercent + clearProps on complete).
+- FAQ numbers are CSS counters (faq-counter, decimal-leading-zero) via embedded rules + fs-10 mono with
+  the glyph-box line-height 0.795.
+- Same page-base theme pattern: .home-faq-wrap paints its own white (live: page-level .main bg).

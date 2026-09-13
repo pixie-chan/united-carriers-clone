@@ -292,6 +292,31 @@ parts.extend(ins_rules)
 parts.extend(ins_node_rules)
 parts.append(emb_ins)
 
+# ---- faq (accordion) ----
+faq_rules = filter_css(raw, lambda sel: 'home-faq' in sel)
+FAQ_IDS = ('_2fdd36e9-383a-6cbf-0090-89bdb1e4d5a1',
+           '_139a5fba-b318-aed8-456a-5995709192fa',
+           'ffca6108-f47c-6400-8997-59ce06e9026d')
+faq_node_rules = filter_css(raw, lambda sel: any(i in sel for i in FAQ_IDS), scale=False)
+emb_faq = '''/* ===== faq overrides from the live page's embedded custom css ===== */
+/* live paints white via the page-level .main bg; our page base is dark (theme audit thread) */
+.home-faq-wrap { background-color: var(--_color---bg--main); }
+.home-faq-main-list { counter-reset: faq-counter; }
+.home-faq-main-item { counter-increment: faq-counter; }
+.home-faq-main-item-number .txt { line-height: 0.795; }
+.home-faq-main-item-number .txt:not(.w-input):empty { display: block; }
+.home-faq-main-item-number .txt::before { content: counter(faq-counter, decimal-leading-zero); }
+.home-faq-main-item.active .home-faq-main-item-line { background-color: var(--_color---content--main); }
+.home-faq-main-item.active .home-faq-main-item-title { color: var(--_color---content--main); }
+.home-faq-main-item.active .home-faq-main-item-dot { background-color: var(--_color---content--main); }
+.home-faq-main-item:hover .home-faq-main-item-dot { background-color: var(--_color---content--main); }
+.home-faq-main-item:hover .home-faq-main-item-title { color: var(--_color---content--main); }
+'''
+parts.append('\n/* ===== faq ===== */')
+parts.extend(faq_rules)
+parts.extend(faq_node_rules)
+parts.append(emb_faq)
+
 out = '\n\n'.join(parts)
 out = out.replace('url(../6a44', 'url(../assets/img/6a44')
 out = out.replace('--_color---content--black\\<deleted\\|variable-6e7d8137-8713-9ff4-5cea-f92e6216a872\\>', '--_color---unused')
@@ -439,3 +464,23 @@ iblock = ('<!-- INSIGHTS:START (ported from live: dark article list + thumb hove
 open(f'{SITE}/_insights_block.html', 'w').write(iblock)
 print('insights block written:', len(iblock), 'chars -> site/_insights_block.html')
 print('insights css rules:', len(ins_rules), '| insights node rules:', len(ins_node_rules))
+
+# ---------------- HTML: faq (accordion) ----------------
+fpretty = open(f'{EXT}/faq.pretty.html').read()
+fstart = fpretty.find('<section')
+fend = fpretty.find('<div class="home-cta-wrap">')
+assert fstart > -1 and fend > fstart, 'faq bounds not found'
+fblock = fpretty[fstart:fend].rstrip()
+# ends with </section> + the wrap's closing </div>; prepend the wrap open only
+fblock = '<div class="home-faq-wrap">\n' + fblock
+# keep inline widths (live keeps title 249px / sub-text 179px), strip transform-ish styles
+fblock = re.sub(r'style="([^"]*)"', clean_style, fblock)
+fblock = fblock.replace('https://cdn.prod.website-files.com/6a44eec1ed1af2c4c403df6b/', 'assets/img/')
+fblock = fblock.replace('https://cdn.prod.website-files.com/6a44eec1ed1af2c4c403df68/', 'assets/img/')
+fblock = re.sub(r'\n{2,}', '\n', fblock)
+fblock = re.sub(r'>\s+<', '><', fblock)   # minify inter-tag whitespace (see insights note)
+fblock = ('<!-- FAQ:START (ported from live: accordion list, title mask reveal) -->\n'
+          + fblock + '\n  <!-- FAQ:END -->')
+open(f'{SITE}/_faq_block.html', 'w').write(fblock)
+print('faq block written:', len(fblock), 'chars -> site/_faq_block.html')
+print('faq css rules:', len(faq_rules), '| faq node rules:', len(faq_node_rules))

@@ -95,6 +95,18 @@ else:
     assert idx > -1, 'no partners marker'
     html = html[:idx + len('<!-- PARTNERS:END -->')] + '\n\n' + ins + '\n' + html[idx + len('<!-- PARTNERS:END -->'):]
 
+# 11. faq block after INSIGHTS:END (replace-capable)
+if 'FAQ:START' in html:
+    a = html.find('<!-- FAQ:START')
+    b2 = html.find('<!-- FAQ:END -->') + len('<!-- FAQ:END -->')
+    faq = open('/home/zen/projects/united-carriers-clone/site/_faq_block.html').read()
+    html = html[:a] + faq + html[b2:]
+else:
+    faq = open('/home/zen/projects/united-carriers-clone/site/_faq_block.html').read()
+    idx = html.find('<!-- INSIGHTS:END -->')
+    assert idx > -1, 'no insights marker'
+    html = html[:idx + len('<!-- INSIGHTS:END -->')] + '\n\n' + faq + '\n' + html[idx + len('<!-- INSIGHTS:END -->'):]
+
 if html != orig:
     open(P, 'w').write(html)
     print('index.html updated, len', len(html))

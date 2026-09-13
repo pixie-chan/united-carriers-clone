@@ -8,6 +8,7 @@ import { initWhy } from './why.js';
 import { initTesti } from './testi.js';
 import { initPartners } from './partners.js';
 import { initInsights } from './insights.js';
+import { initFaq } from './faq.js';
 
 const gsap = window.gsap;
 const Lenis = window.Lenis;
@@ -104,6 +105,7 @@ async function boot() {
   try { initTesti(); } catch (e) { console.warn('testi failed', e); }
   try { initPartners(); } catch (e) { console.warn('partners failed', e); }
   try { initInsights(); } catch (e) { console.warn('insights failed', e); }
+  try { initFaq(); } catch (e) { console.warn('faq failed', e); }
   runLoader(globe);
 }
 
