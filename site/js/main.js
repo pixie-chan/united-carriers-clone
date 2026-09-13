@@ -6,6 +6,7 @@ import { initTail } from './tail.js';
 import { initChrome } from './chrome.js';
 import { initWhy } from './why.js';
 import { initTesti } from './testi.js';
+import { initPartners } from './partners.js';
 
 const gsap = window.gsap;
 const Lenis = window.Lenis;
@@ -100,6 +101,7 @@ async function boot() {
   try { initTail(); } catch (e) { console.warn('tail failed', e); }
   try { initWhy(); } catch (e) { console.warn('why failed', e); }
   try { initTesti(); } catch (e) { console.warn('testi failed', e); }
+  try { initPartners(); } catch (e) { console.warn('partners failed', e); }
   runLoader(globe);
 }
 

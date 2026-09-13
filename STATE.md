@@ -84,9 +84,8 @@ to a human). Keep the rebuild code clean and documented. Resume phrase: "resume 
 
 ## Open threads / next steps (priority order)
 
-1. Sections: testi BUILT + geometry-verified at 1440x900 (2026-09-13; visual pass over the captured
-   composites + 1920 check still pending). Next in order: partners -> insights -> FAQ -> footer (same
-   port pipeline: raw css extract -> build-port list, markup from extracts, JS from pretty/Home.js).
+1. Sections: testi + partners BUILT and verified at 1440 AND 1920 (partners pixel diff 1.3-2.1; testi
+   timeline exact). Next in order: insights -> FAQ -> footer (same port pipeline).
 2. After sections: mobile pass (media queries are already ported into sections2.css).
 3. Service choreography polish (first/second screens) to fix y3220.
 4. Ocean polish: first pass DONE (2026-09-13 morning: NoColorSpace textures + level match + view-angle
@@ -95,6 +94,9 @@ to a human). Keep the rebuild code clean and documented. Resume phrase: "resume 
    some patches, cloud wash at section exit (f=6) weaker than live (165B vs 240B), awwwards badge omitted
    (third-party embed), hull-edge streaks a touch too clean.
 5. Re-run full QA (qa-rebuild + why-check + compare-ab) and update ANALYSIS.md numbers.
+6. PAGE BASE THEME AUDIT: live page base = white (body/.main --bg--main) with local dark var-remaps
+   (why-main, service-speed); ours = dark body + local whites. Partners paints its own white now. Before
+   the final QA, audit all sections on the white base model (and as insights[dark]/faq/footer land).
 
 Servers left running at pause unless the box restarts.
 
@@ -251,3 +253,16 @@ that were never probed or committed. This pass verified, completed and committed
   Section-relative phases are all exact; the absolute page offset needs an audit of hero/intro/
   service/tail tops at 1920 (add to QA thread).
 - QA scripts: handoff-probe.py, testi-probe.py, verify-1920.py (kept).
+
+## Session log 2026-09-13 (continuation 2): partners built
+
+- Partners section BUILT via the port pipeline (logo lattice, hover crossfade, batch reveal) and verified
+  at 1440 and 1920: pixel diff 1.3-2.1 (essentially identical), geo within 1px, counts exact (17/16, no
+  placeholder fill - live's runtime leaves the templates in a .hidden div, so no refill: matched).
+- Learned: .hidden/{display:none} base rule was missing from our css (a 818px ghost row inside the grid);
+  .hidden added to KEEP_BASE. Live label/cate texts are STATIC (live's runtime never animates them);
+  our reveal removed to match. Inline label widths (339/1032px) are build artifacts: live runtime has
+  none (natural 334/1027), stripping them in the block is correct.
+- PAGE BASE THEME (open thread): live model = white body/.main + local dark var-remaps; ours = dark body
+  + local whites. Partners region now paints its own white via .home-partners-wrap. Before the final QA,
+  audit every section over a white page base (insights is dark, faq/footer TBD) - see open threads.

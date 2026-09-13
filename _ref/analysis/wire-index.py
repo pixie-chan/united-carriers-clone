@@ -67,6 +67,22 @@ else:
     html = html.replace('<!-- remaining sections (why/ocean, testimonials, partners, insights, faq, footer): built next -->',
                         '<!-- remaining sections (partners, insights, faq, footer): built next -->')
 
+# 9. partners block after TESTI:END (replace-capable)
+if 'PARTNERS:START' in html:
+    a = html.find('<!-- PARTNERS:START')
+    b2 = html.find('<!-- PARTNERS:END -->') + len('<!-- PARTNERS:END -->')
+    partners = open('/home/zen/projects/united-carriers-clone/site/_partners_block.html').read()
+    html = html[:a] + partners + html[b2:]
+else:
+    partners = open('/home/zen/projects/united-carriers-clone/site/_partners_block.html').read()
+    idx = html.find('<!-- TESTI:END -->')
+    assert idx > -1, 'no testi marker'
+    html = html[:idx + len('<!-- TESTI:END -->')] + '\n\n' + partners + '\n' + html[idx + len('<!-- TESTI:END -->'):]
+    html = html.replace('<!-- partners, insights, faq, footer: built next -->',
+                        '<!-- insights, faq, footer: built next -->')
+    html = html.replace('<!-- remaining sections (partners, insights, faq, footer): built next -->',
+                        '<!-- remaining sections (insights, faq, footer): built next -->')
+
 if html != orig:
     open(P, 'w').write(html)
     print('index.html updated, len', len(html))

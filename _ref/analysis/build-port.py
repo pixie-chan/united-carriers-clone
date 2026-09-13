@@ -61,7 +61,7 @@ emb = open(f'{EXT}/embedded.css').read()
 
 KEEP_BASE = ['.w-container', '.w-layout-grid', '.w-layout-blockcontainer', '.container',
              '.txt', '.fw-med', '.img-df', '.heading', '.cl-note', '.hidden-mb', '.hidden-dsk',
-             '.home-service-new-truck-inner', '.svg']
+             '.home-service-new-truck-inner', '.svg', '.hidden']
 def keep_base(sel):
     return any(sel.strip().startswith(k) for k in KEEP_BASE)
 
@@ -243,6 +243,30 @@ parts.extend(testi_node_rules)
 parts.extend(testi_extra)
 parts.append(emb_testi)
 
+# ---- partners (logo lattice + reveals) ----
+partners_rules = filter_css(raw, lambda sel: 'home-partners' in sel)
+PARTNERS_IDS = ('_081b3f2d-08e8-1749-b939-f736c59af826',
+                '_081b3f2d-08e8-1749-b939-f736c59af829',
+                '_081b3f2d-08e8-1749-b939-f736c59af82e',
+                '_081b3f2d-08e8-1749-b939-f736c59af830',
+                '_7ff89e7a-eb73-6d9c-cf04-27f240a39a3c',
+                '_7ff89e7a-eb73-6d9c-cf04-27f240a39a41',
+                '_7ff89e7a-eb73-6d9c-cf04-27f240a39a43',
+                'f4770c19-8c50-4513-806c-59af2ed50310')
+partners_node_rules = filter_css(raw, lambda sel: any(i in sel for i in PARTNERS_IDS), scale=False)
+emb_partners = '''/* ===== partners overrides from the live page's embedded custom css ===== */
+/* live paints white via the page-level .main bg (--_color---bg--main); our page base is
+   dark, so the region paints itself white (page-base theme audit is an open thread) */
+.home-partners-wrap { background-color: var(--_color---bg--main); }
+.home-partners-item:hover .home-partners-item-inner { background-color: #f4f4f4; }
+.home-partners-item:hover .home-partners-item-thumb { opacity: 0; }
+.home-partners-item:hover .home-partners-item-thumb.is-hover { opacity: 1; }
+'''
+parts.append('\n/* ===== partners ===== */')
+parts.extend(partners_rules)
+parts.extend(partners_node_rules)
+parts.append(emb_partners)
+
 out = '\n\n'.join(parts)
 out = out.replace('url(../6a44', 'url(../assets/img/6a44')
 out = out.replace('--_color---content--black\\<deleted\\|variable-6e7d8137-8713-9ff4-5cea-f92e6216a872\\>', '--_color---unused')
@@ -349,3 +373,23 @@ tblock = ('<!-- TESTI:START (ported from live: plane flyover + testimonial wipe)
 open(f'{SITE}/_testi_block.html', 'w').write(tblock)
 print('testi block written:', len(tblock), 'chars -> site/_testi_block.html')
 print('testi css rules:', len(testi_rules), '| testi extras:', len(testi_extra))
+
+# ---------------- HTML: partners (logo lattice) ----------------
+ppretty = open(f'{EXT}/partners.pretty.html').read()
+pstart = ppretty.find('<section')
+pend = ppretty.find('<div data-section="dark" class="home-ins-wrap">')
+assert pstart > -1 and pend > pstart, 'partners bounds not found'
+pblock = ppretty[pstart:pend].rstrip()
+# ends with: </section> + .home-partners-bg div + closing </div> of the wrap
+pblock = '<div class="home-partners-wrap">\n' + pblock + '\n</div>'
+pblock = re.sub(r'style="([^"]*)"', clean_style_testi, pblock)
+pblock = pblock.replace('https://cdn.prod.website-files.com/6a44eec1ed1af2c4c403df6b/', 'assets/img/')
+pblock = pblock.replace('https://cdn.prod.website-files.com/6a44eec1ed1af2c4c403df68/', 'assets/img/')
+pblock = pblock.replace('%2520%25281%2529', '%20(1)')   # double-encoded partners-bg (1) variants
+pblock = re.sub(r'\n{2,}', '\n', pblock)
+pblock = '\n'.join('    ' + l if l.strip() else l for l in pblock.split('\n'))
+pblock = ('<!-- PARTNERS:START (ported from live: logo lattice, hover swap, batch reveal) -->\n'
+          + pblock + '\n  <!-- PARTNERS:END -->')
+open(f'{SITE}/_partners_block.html', 'w').write(pblock)
+print('partners block written:', len(pblock), 'chars -> site/_partners_block.html')
+print('partners css rules:', len(partners_rules), '| partners node rules:', len(partners_node_rules))
