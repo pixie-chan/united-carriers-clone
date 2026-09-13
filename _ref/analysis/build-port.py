@@ -146,7 +146,7 @@ emb_live = '''/* ===== overrides from the live page's embedded custom css (resca
 # tail rest-state: OUR-rem values (do not scale; captured from live at scroll 14160)
 rest_state = '''/* ===== tail rest-state: runtime end values captured from the live site (scroll 14160, 1440x900).
    The JS entrance animates _from_ these compositions back to them, so the resting state is CSS. ===== */
-.uc-tail { position: absolute; top: 676.125rem; left: 0; right: 0; height: 234.375rem; z-index: 3; background: #fff; }
+.uc-tail { position: absolute; top: 895.125rem; left: 0; right: 0; height: 234.375rem; z-index: 3; background: #fff; }
 .uc-tail .home-service-third-screen { margin-top: 0; }
 .uc-tail .home-service-new-truck-wrap { opacity: 1; }
 .uc-tail .home-service-new-truck-stick { top: 0; }
@@ -186,12 +186,27 @@ header = ''':root {
 }
 '''
 
+_svcraw = open('/home/zen/projects/united-carriers-clone/_ref/mirror/unitedcarriers.com/index.html').read()
+_w = _svcraw.find('class="home-service-wrap"')
+SVC_IDS = tuple(sorted(set(re.findall(r'id="w-node-([^"]+)"', _svcraw[_w:_svcraw.find('class="home-service-third-screen"', _w)]))))
+svc_node_rules = filter_css(raw, lambda sel: any(i in sel for i in SVC_IDS), scale=False)
 parts = [header,
          '/* ===== base layout + text primitives (verbatim from live css, rem-rescaled) ===== */']
 parts.extend(base_rules)
 parts.append('\n' + grid_block)
 parts.append('\n/* ===== service tail ===== */')
 parts.extend(tail_rules)
+parts.extend(svc_node_rules)
+svc_screen_rules = filter_css(raw, lambda sel: 'home-service' in sel)
+parts.extend(svc_screen_rules)
+svc_emb_extra = '''/* ===== service screens: embedded overrides (empty-block scroll lengths etc) ===== */
+.home-service-empty-block.first-screen { height: 600vh; }
+.home-service-empty-block.second-screen { height: 1100vh; }
+.home-service-main-inner { display: flex; opacity: 0; transform: translateX(100vw); }
+.home-service-speed-inner .txt { height: 1.8rem; }
+.home-service-item-title h3 br { display: none; }
+'''
+parts.append(svc_emb_extra)
 parts.append(emb_live)
 parts.append(rest_state)
 parts.append('\n/* ===== why / ocean ===== */')
@@ -421,6 +436,39 @@ wrapped = f'''<!-- SERVICE-TAIL:START (ported from live: road + truck + reliabil
   <!-- SERVICE-TAIL:END -->'''
 open(f'{SITE}/_tail_block.html', 'w').write(wrapped)
 print('tail block written:', len(wrapped), 'chars')
+
+# ---------------- HTML: service first/second screens (real port) ----------------
+svcraw = open('/home/zen/projects/united-carriers-clone/_ref/mirror/unitedcarriers.com/index.html').read()
+w = svcraw.find('class="home-service-wrap"')
+assert w > -1, 'service-wrap not found'
+wstart = svcraw.rfind('<div', 0, w)
+t3 = svcraw.find('class="home-service-third-screen"', w)
+assert t3 > -1, 'third-screen not found'
+t3start = svcraw.rfind('<div', 0, t3)
+svcslice = svcraw[wstart:t3start]
+opens = len(re.findall(r'<div\b', svcslice))
+closes = len(re.findall(r'</div>', svcslice))
+svcslice = svcslice + ('</div>' * (opens - closes))
+svcslice = re.sub(r'style="([^"]*)"', clean_style, svcslice)
+# mirror-relative asset URLs -> local: frames go to assets/frames/, everything else to assets/img/
+import html as _html
+from urllib.parse import unquote as _unquote
+_frameset = set(os.listdir(f'{SITE}/assets/frames'))
+def _svc_url(m):
+    name = m.group(1)
+    plain = _html.unescape(_unquote(name))
+    dest = 'assets/frames/' if plain in _frameset else 'assets/img/'
+    return dest + name
+svcslice = re.sub(r'\.\./cdn\.prod\.website-files\.com/[^/]+/([^"\s,)]+)', _svc_url, svcslice)
+svcslice = re.sub(r'\n{2,}', '\n', svcslice)
+svcslice = re.sub(r'>\s+<', '><', svcslice)
+svcblock = ('<!-- SERVICE:START (ported from live: first/second screens, crane + truck frame sequences) -->\n'
+            + svcslice + '\n  <!-- SERVICE:END -->')
+open(f'{SITE}/_service_block.html', 'w').write(svcblock)
+print('service block written:', len(svcblock), 'chars (opens %d closes %d, appended %d)' % (opens, closes, opens - closes))
+SVC_IDS = tuple(sorted(set(re.findall(r'id="w-node-([^"]+)"', svcslice))))
+print('service ids:', len(SVC_IDS))
+print('service ids sample:', SVC_IDS[:6])
 
 # ---------------- HTML: why / ocean ----------------
 wpretty = open(f'{EXT}/why.pretty.html').read()

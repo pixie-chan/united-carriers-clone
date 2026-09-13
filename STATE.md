@@ -346,3 +346,35 @@ Visible symptoms: container-door decal texts (NBEU 045004 0, MAX GROSS etc) pres
 reb (live darker in those regions, reb lighter); y=8400 mid-area diffs 36-74. Fix = full re-port through
 the standard pipeline (filter '.home-service' + node rules + block + service.js), replacing the custom
 service DOM/JS. This is the biggest remaining fidelity item.
+
+## Session log 2026-09-13 (continuation 7): SERVICE RE-PORT (first/second screens)
+
+THE forklift/frame-sequence re-port landed. Replaced the old custom approximation
+(.service-sticky + #craneCanvas) with the real live port:
+- site/js/frame-seq.js: full FrameSequence engine port (windowed loading, lerp playhead,
+  cover/contain fit, eviction, scrollTrigger scrub).
+- site/js/service-frames.js: the 5 frame arrays (y=159 lift-up, k=97 rotate, T=97 put-container,
+  S=89 truck, x=63 mobile) as local basenames; all 505 frames present in site/assets/frames/
+  (763 files incl. extras downloaded 2026-09-12).
+- site/js/service.js: desktop choreography port (tlMoveCraneIn, tlCraneRot, tlMoveTruckIn,
+  third-screen m-reveals + sub-item batch, containerAnimation horizontal reveals).
+- build-port.py: service block extraction (mirror-relative URL rewrite by file existence:
+  frames->assets/frames, else assets/img), SVC_IDS node rules, svc_screen_rules filter,
+  svc_emb_extra (empty-block 600vh/1100vh), rest_state uc-tail top 676.125rem -> 895.125rem.
+- wire-index.py step 14 replaces the old custom block between '<!-- services -->' and
+  '<!-- SERVICE-TAIL:START -->'.
+- sections.js: service portion excised (intro kept). main.js: initService() after initSections().
+
+VERIFIED: wrapTop 2920 = live 2920, wrapH 12140 = 12140, t3Top 11935 = 11935, scene 900 = 900,
+craneSq 1339x753 = live, docH 28238 (live 28229), zero errors, zero 404s.
+Canvas draw parity: crane nonzeroSampled 10395 = live 10395; truck 1858 = 1858.
+service-check.py anchors: 5.4/2.3/2.4/1.9/2.6/5.1/2.3/2.2/5.7 up to y=10500 (green);
+y=11400: 81.1 and y=12100: 117.3 (handoff zone) = DELEGATED to opencode worker svc-seam
+(gateway/ds/deepseek-v4-pro) with brief _ref/analysis/SERVICE_TASK.md. Acceptance <=12 there.
+
+### OpenCode worker chain notes (2026-09-13)
+- 9router gateway on :20128 must be UP (systemctl --user status 9router.service; it is
+  'disabled' at boot, start manually: systemctl --user start 9router.service).
+- Verified worker model: gateway/ds/deepseek-v4-pro (nonce + coding test passed).
+  spark/muse-spark chat path is broken (responses-only).
+- Spawn: ~/scripts/oc-spawn.sh <name> <dir> "<task>" gateway/ds/deepseek-v4-pro

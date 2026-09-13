@@ -10,6 +10,7 @@ import { initPartners } from './partners.js';
 import { initInsights } from './insights.js';
 import { initFaq } from './faq.js';
 import { initFooter } from './footer.js';
+import { initService } from './service.js';
 
 const gsap = window.gsap;
 const Lenis = window.Lenis;
@@ -101,6 +102,7 @@ async function boot() {
     console.warn('globe failed', e);
   }
   initSections().catch(e => console.warn('sections failed', e));
+  try { initService(); } catch (e) { console.warn('service failed', e); }
   try { initTail(); } catch (e) { console.warn('tail failed', e); }
   try { initWhy(); } catch (e) { console.warn('why failed', e); }
   try { initTesti(); } catch (e) { console.warn('testi failed', e); }

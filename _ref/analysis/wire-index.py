@@ -131,6 +131,20 @@ else:
     assert idx > -1, 'no cta marker'
     html = html[:idx + len('<!-- CTA:END -->')] + '\n\n' + fo + '\n' + html[idx + len('<!-- CTA:END -->'):]
 
+# 14. service block: replace the old custom service section between its markers
+# (old block sits between '<!-- services -->' and '<!-- SERVICE-TAIL:START')
+if '<!-- SERVICE:START' in html:
+    a = html.find('<!-- SERVICE:START')
+    b2 = html.find('<!-- SERVICE:END -->') + len('<!-- SERVICE:END -->')
+    sv = open('/home/zen/projects/united-carriers-clone/site/_service_block.html').read()
+    html = html[:a] + sv + html[b2:]
+else:
+    sv = open('/home/zen/projects/united-carriers-clone/site/_service_block.html').read()
+    oa = html.find('<!-- services -->')
+    ob = html.find('<!-- SERVICE-TAIL:START')
+    assert oa > -1 and ob > oa, 'old service markers not found'
+    html = html[:oa] + sv + '\n\n' + html[ob:]
+
 if html != orig:
     open(P, 'w').write(html)
     print('index.html updated, len', len(html))
