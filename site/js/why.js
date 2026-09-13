@@ -91,14 +91,21 @@ void main() {
   vec2 euv = vec2(atan(R.z, R.x) / 6.28318 + .5, acos(clamp(R.y, -1.0, 1.0)) / 3.14159);
   vec3 env = texture2D(uEnv, euv).rgb;
 
-  vec3 deep = vec3(0.031, 0.094, 0.210);
-  vec3 col = deep + vec3(.034, .062, .092) * (n1.x + n1.y + n2.x * .5);
-  col += env * 0.5 * (0.05 + 0.22 * fres);
+  // screen-space uv (wake anchoring + view-angle gradient)
+  vec2 suv = vec2(gl_FragCoord.x / uResolution.x, gl_FragCoord.y / uResolution.y);
+
+  vec3 deep = vec3(0.0, 0.086, 0.245);
+  vec3 col = deep + vec3(.003, .022, .042) * (n1.x + n1.y + n2.x * .5);
+  col += env * vec3(.30, .85, 1.0) * 0.5 * (0.03 + 0.13 * fres);
   float spec = pow(max(dot(reflect(-uSun, n), V), 0.0), 90.0);
   col += vec3(1.0, .98, .92) * spec * .65;
 
+  // view-angle gradient: grazing (top) reads brighter, near (bottom) deeper
+  // (live's per-pixel fresnel; our V is constant, so fake the vertical term)
+  float vshade = clamp((suv.y - 0.5) * 2.0, -1.0, 1.0);
+  col *= 1.0 + 0.10 * vshade;
+
   // ---- wakes (screen space, anchored to the ship's DOM box; stern at the TOP of the box) ----
-  vec2 suv = vec2(gl_FragCoord.x / uResolution.x, gl_FragCoord.y / uResolution.y);
   float dx = abs(suv.x - uShipUv.x);
   float sc = uShipScale;
   float foam = 0.0;
@@ -109,15 +116,15 @@ void main() {
     float bowY = sternY - 2.0 * halfL;              // bow edge (bottom of the ship box)
 
     // breakup fields (churn + speckle) shared by all foam: keeps everything streaky, never a solid band
-    vec2 spuv = suv * vec2(23.0, 16.0);
+    vec2 spuv = suv * vec2(96.0, 70.0);
     vec2 warp1 = texture2D(uNormal, spuv * .31 + vec2(t * .02)).xy * 2.0 - 1.0;
     vec2 warp2 = texture2D(uNormal, spuv * .73 - vec2(t * .03, t * .02)).zx * 2.0 - 1.0;
     float sp = texture2D(uNormal, spuv + warp1 * 2.4 + warp2 * 1.2 + vec2(t * .05, -t * .04)).b;
     float sp2 = texture2D(uNormal, spuv * 1.9 + warp2 * 2.0).b;
-    float speckle = mix(.18, 1.3, smoothstep(.40, .72, sp * .65 + sp2 * .35));
+    float speckle = mix(.10, 1.45, smoothstep(.45, .72, sp * .65 + sp2 * .35));
     float churn = .55 + .45 * (sin(t * 2.2 + dx * 520.0 + suv.y * 380.0) * sin(t * 1.7 - suv.y * 210.0 + dx * 330.0) * .5 + .5);
     float breakup = speckle * churn;
-    float scGate = smoothstep(0.012, 0.08, halfW); // foam fades out as the ship shrinks
+    float scGate = smoothstep(0.008, 0.05, halfW); // foam fades out as the ship shrinks
 
     // 1) bow wave: foam flaring outward + down from the bow (bottom end)
     float dyB = bowY - suv.y;
@@ -126,30 +133,43 @@ void main() {
       float armLine = exp(-pow((dx - arm) / (0.007 + 0.05 * dyB + halfW * 0.10), 2.0));
       float wash = smoothstep(arm, halfW * 0.15, dx) * 0.5;
       float fade = exp(-max(dyB, 0.0) / (0.45 * halfL + 0.09));
-      foam += (armLine * 0.85 + wash) * fade * breakup;
+      foam += (armLine * 0.95 + wash) * fade * breakup;
     }
 
     // 2) hull side foam: narrow broken streaks hugging the hull edges, fading toward the bow
     float dyIn = sternY - suv.y;
     if (dyIn > -0.02 && dyIn < 2.0 * halfL + 0.05) {
       float edgeD = abs(dx - halfW * 1.02);
-      float w0 = max(0.0035, halfW * 0.065);
+      float w0 = max(0.0035, halfW * 0.075);
       float side = exp(-pow(edgeD / w0, 2.0));
       float fade = exp(-max(dyIn, 0.0) / (0.95 * halfL));
-      foam += side * fade * (0.30 + 0.55 * breakup);
+      foam += side * fade * (0.12 + 0.60 * breakup);
     }
 
     // 3) faint stern trail, above the stern (trailing wake)
     float dyA = suv.y - sternY;
     if (dyA > -0.01 && dyA < 0.9 * halfL + 0.1) {
-      float trail = exp(-pow(dx / (halfW * 0.55), 2.0));
+      float trail = exp(-pow(dx / (halfW * 0.45), 2.0));
       float fade = exp(-max(dyA, 0.0) / (0.30 * halfL + 0.06));
-      foam += trail * fade * 0.35 * breakup;
+      foam += trail * fade * 0.15 * breakup;
+    }
+
+    // 4) broad churned-water wash: wide soft bright field spreading laterally
+    //    from the hull (live's appearance: streaks near the hull, soft wash far out)
+    {
+      float wmidY = sternY - halfL;                   // mid-hull, uv
+      float ex = dx / 0.17;
+      float ey = (suv.y - wmidY) / 0.34;
+      float wr = sqrt(ex * ex + ey * ey);
+      float soft = .45 + .85 * smoothstep(.30, .80, sp2 * .6 + sp * .4);
+      float wash = exp(-wr * 1.35) * soft;
+      float wrGate = smoothstep(0.004, 0.02, halfW);
+      col += vec3(.055, .105, .21) * min(wash * wrGate, 1.2);
     }
 
     foam *= scGate;
   }
-  col = mix(col, vec3(.94, .97, 1.0), clamp(foam * 1.35, 0.0, .85));
+  col = mix(col, vec3(.94, .97, 1.0), clamp(foam * 1.45, 0.0, .88));
 
   // ---- photo overlay composite (saturation blend of the brightened overlay) ----
   vec2 ouv = (suv - .5) / max(uOverlayScale, .2) + .5;
@@ -158,7 +178,7 @@ void main() {
   ov = clamp(mix(vec3(lum(ov)), ov, 1.2), 0.0, 1.0);
   // large-scale luminance mottling from a second, offset overlay sample
   vec3 ov2 = texture2D(uOverlay, clamp((suv - .5) / max(uOverlayScale * 1.6, .2) + .53, 0.0, 1.0)).rgb;
-  col *= .86 + .28 * clamp(lum(ov2) * 1.5, 0.0, 1.0);
+  col *= .88 + .22 * clamp(lum(ov2) * 1.5, 0.0, 1.0);
   col = satBlend(col, ov);
 
   // radial blue glows (subtle)
@@ -196,9 +216,9 @@ export function initWhy() {
   texN.wrapS = texN.wrapT = THREE.RepeatWrapping;
   texN.anisotropy = renderer.capabilities.getMaxAnisotropy();
   const texE = loader.load('assets/img/ocean-envmap.webp');
-  texE.colorSpace = THREE.SRGBColorSpace;
   const texO = loader.load('assets/img/ocean-overlay.webp');
-  texO.colorSpace = THREE.SRGBColorSpace;
+  texE.colorSpace = THREE.NoColorSpace;
+  texO.colorSpace = THREE.NoColorSpace;
   texO.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
   const uniforms = {

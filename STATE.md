@@ -88,7 +88,11 @@ to a human). Keep the rebuild code clean and documented. Resume phrase: "resume 
    port pipeline: raw css extract -> build-port list, markup from extracts, JS from pretty/Home.js).
 2. After sections: mobile pass (media queries are already ported into sections2.css).
 3. Service choreography polish (first/second screens) to fix y3220.
-4. Ocean polish (glints/moire/wake).
+4. Ocean polish: first pass DONE (2026-09-13 morning: NoColorSpace textures + level match + view-angle
+   gradient + broad churn wash; column profiles now track live at f=2). Remaining deltas: f=4+ far-field
+   brightness (live right side stays ~120-126B out to x1530; ours decays to ~97), water micro-contrast in
+   some patches, cloud wash at section exit (f=6) weaker than live (165B vs 240B), awwwards badge omitted
+   (third-party embed), hull-edge streaks a touch too clean.
 5. Re-run full QA (qa-rebuild + why-check + compare-ab) and update ANALYSIS.md numbers.
 
 Servers left running at pause unless the box restarts.
@@ -185,3 +189,31 @@ Tooling added: _ref/analysis/repro2.py (phase walk + contact sheets), canvas-dum
 frame-phase-compare2.py (in-page canvas dumps matched against source frames to find the displayed frame index),
 forensic.py / tail-phase.py (5-sequence identification), skeleton.py, sweep-svc.py, endgame.py, verify4.py.
 QA imagery under _ref/analysis/repro2/ is gitignored (large PNGs).
+
+## Session log 2026-09-13 (morning): ocean water parity pass
+
+Context: last session ended mid-verification; why.js carried uncommitted changes (NoColorSpace + tuning)
+that were never probed or committed. This pass verified, completed and committed them.
+
+- **QA harness flakiness ROOT-CAUSED**: the live mirror's engine intermittently dies on giant instant
+  `window.scrollTo` jumps (pageerror "Cannot read properties of undefined (reading 'end')" -> why-scrub
+  frozen: ship stuck at 541px, white clouds frozen over the scene, probes read white 254). Stepped scrolling
+  (<=1200px per step, ~100ms apart) is 100% reliable across repeated runs. ship-water-check2.py now
+  validates scrub-liveness (ship width MUST change between two phases) and retries before capturing.
+- **Texture colour space**: textures sampled raw inside a custom ShaderMaterial need `THREE.NoColorSpace`;
+  SRGBColorSpace made the GPU linearize -> washed-out desaturated water. The fix is correct, kept.
+- **Measured fixes this pass** (fresh paired captures, 1920x1080, stepped scroll both sides):
+  - deep 0.095/0.270 -> 0.086/0.245; large-scale mottle restored (.88+.22); speckle grain 64/46 -> 96/70;
+    hull side foam 0.12+0.60*breakup; bow armLine 0.95; foam mix 1.45 clamp .88; scGate fades later
+    (0.008..0.05).
+  - NEW view-angle gradient (top +10% / bottom -10%): live has per-pixel fresnel, our V was constant -> the
+    flat look. f=2 right-side column profile now: live 148/128/117/106/99 vs ours 156/116/108/102/97.
+  - NEW broad churned-water wash (wake component 4): wide soft bright field decaying laterally from the
+    hull. Live keeps a bright textured field hundreds of px out even when the ship is small; ours was a
+    thin hull band only.
+- **Dolly parity verified numerically** (ship width, live vs reb): 510/516 (f1), 414/416 (f2), 266/253 (f3),
+  130/113 (f4), 58/49 (f5), settled identical 40/196/442/940 (f6). Mid-range shrink a hair fast; accepted.
+- Known remaining: see Open threads #4. Awwwards badge = third-party embed (div#awwwards), omitted by
+  design unless wanted.
+- Tooling: ship-water-check.py (paired capture), ship-water-check2.py (robust: stepped scroll + liveness
+  check + retry), both kept in _ref/analysis; QA imagery in repro2/whypair/ (gitignored).
