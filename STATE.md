@@ -395,3 +395,22 @@ y=11400: 81.1 and y=12100: 117.3 (handoff zone) = DELEGATED to opencode worker s
   results get verified on disk by re-running harnesses before any trust.
 - NEXT (open threads): mobile pass, page-base theme audit (white model vs our dark base), 1920 absolute
   offset audit (pre-why sections run +1680px tall at 1920), full-page heroes/why polish leftovers.
+
+## Full-page pass AFTER service re-port (2026-09-13, definitive)
+
+| y | area | diff | before |
+|---|---|---|---|
+| 450 | hero | 32.7 | 32.6 (globe anim phase noise, known) |
+| 4200 | service 1st | **2.3** | 50.4 |
+| 8400 | service mid | **2.1** | 16.1 |
+| 13000 | tail | 4.4 | 6.4 |
+| 16860 | ocean | 10.2 | 14.1 |
+| 20800 | testi | 5.9 | 5.9 |
+| 23375 | partners | 3.6 | 3.7 |
+| 25579 | insights | 2.5 | 2.6 |
+| 26570 | faq | 4.2 | 4.2 |
+| 27300 | cta+footer | 8.9 | 9.0 |
+
+OVERALL mean 7.7 (was 14.5), worst 32.7 (was 50.4) = hero globe animation phase, not content.
+The service section is now among the cleanest sections. Remaining open threads unchanged
+(mobile pass, theme audit, 1920 offset audit, hero/why polish).
