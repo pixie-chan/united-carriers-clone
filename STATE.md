@@ -322,3 +322,27 @@ that were never probed or committed. This pass verified, completed and committed
 ALL EIGHT SECTIONS NOW BUILT: hero/intro/service/tail/why/testi/partners/insights/faq/
 cta/footer. Next threads: mobile pass, theme audit (see #6), 1920 absolute-offset audit,
 full end-to-end QA pass, polish items in STATE open threads.
+
+## Full-page end-to-end pass (2026-09-13, after footer) - 1440x900, 10 scrolls
+
+| y | area | diff | note |
+|---|---|---|---|
+| 450 | hero | 32.6 | globe canvas animation phase (self-animating; spread diffs) |
+| 4200 | service 1st screen | 50.4 | BOTTOM BAND 116-166: structural service mismatch (see thread) |
+| 8400 | service mid | 16.1 | mid cells 36-74: same family (photo overlay/decal texts missing) |
+| 13000 | tail | 6.4 | clean |
+| 16860 | why/ocean | 14.1 | ocean animation phase + known late-water residual |
+| 20800 | testi | 5.9 | clean |
+| 23375 | partners | 3.7 | clean |
+| 25579 | insights | 2.6 | clean |
+| 26570 | faq | 4.2 | clean |
+| 27300 | cta+footer | 9.0 | wave-circle + particle/marquee phase noise |
+
+NEW TOP THREAD - SERVICE SECTION RE-PORT:
+The service section is an EARLY custom implementation (classes `.service-sticky`, `canvas.service-crane`)
+that only approximates the live. Live drives it with `.home-service-stick` (+empty-block, second-screen,
+land, first/second screen DOM screens); at y=4200 the stacks are structurally different on both pages.
+Visible symptoms: container-door decal texts (NBEU 045004 0, MAX GROSS etc) present on live, missing in
+reb (live darker in those regions, reb lighter); y=8400 mid-area diffs 36-74. Fix = full re-port through
+the standard pipeline (filter '.home-service' + node rules + block + service.js), replacing the custom
+service DOM/JS. This is the biggest remaining fidelity item.
