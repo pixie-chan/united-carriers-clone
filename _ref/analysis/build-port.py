@@ -138,23 +138,19 @@ emb_live = '''/* ===== overrides from the live page's embedded custom css (resca
 .uc-tail { color: var(--_color---content--main); }
 .home-service-third-screen { margin-top: -200vh; }
 .home-service-sub-item:last-child { border-bottom: none; padding-bottom: 0; }
+.home-service-road-big { transform: translateX(-100vw); }
 .home-service-road { --scale-factor: 1; transform: scale(var(--scale-factor)); transform-origin: left top; }
 .home-service-speed-tens, .home-service-speed-units, .home-service-speed-decimals { will-change: transform; }
 .home-service-speed-inner .txt { height: 1.125rem; }
 '''
 
-# tail rest-state: OUR-rem values (do not scale; captured from live at scroll 14160)
-rest_state = '''/* ===== tail rest-state: runtime end values captured from the live site (scroll 14160, 1440x900).
-   The JS entrance animates _from_ these compositions back to them, so the resting state is CSS. ===== */
-.uc-tail { position: absolute; top: 895.125rem; left: 0; right: 0; height: 234.375rem; z-index: 3; background: #fff; }
+# tail placement: the wrapper is absolutely positioned where the live third screen sits.
+# Runtime state for the truck/road is applied by tail.js (a port of the live Service class),
+# so the base element values stay at the live's CSS starting states.
+rest_state = '''/* ===== tail placement: static composition matches the live base state; tail.js scrubs it ===== */
+.uc-tail { position: absolute; top: 895.125rem; left: 0; right: 0; height: 234.375rem; z-index: 3; }
 .uc-tail .home-service-third-screen { margin-top: 0; }
-.uc-tail .home-service-new-truck-wrap { opacity: 1; }
-.uc-tail .home-service-new-truck-stick { top: 0; }
-.uc-tail .home-service-new-truck-rot { top: 40.624rem; transform: translate(0rem, -34.0196rem) rotate(90deg); }
-.uc-tail .home-service-new-truck { top: -40.65rem; transform: scale(1.1098); }
-.uc-tail .home-service-new-truck-inner.only-car { transform: translate(-4.598rem, -0.0412rem) scale(0.346); }
-.uc-tail .home-service-new-truck-inner.container-truck { transform: translate(-4.598rem, -0.0412rem) scale(0.39, 0.346); }
-.uc-tail .home-service-road-wrap { transform: translateY(-7.5rem); }
+.uc-tail .home-service-new-truck-rot { top: 40.624rem; }
 '''
 
 header = ''':root {
