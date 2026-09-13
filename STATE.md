@@ -266,3 +266,18 @@ that were never probed or committed. This pass verified, completed and committed
 - PAGE BASE THEME (open thread): live model = white body/.main + local dark var-remaps; ours = dark body
   + local whites. Partners region now paints its own white via .home-partners-wrap. Before the final QA,
   audit every section over a white page base (insights is dark, faq/footer TBD) - see open threads.
+
+## Session log 2026-09-13 (continuation 3): insights built
+
+- Insights (dark article list + thumbs) BUILT + verified: section h EXACT 812, pixel diff 0.7-1.1
+  in-section, hover sync exact, reveal states match (action+main rise 26.67px/fade at 'top 90%').
+- PAGE BODY FONT FIXED: our body was font-size 1.2rem (16px) vs live's effective 13.33px (= 1rem in
+  our rem system) + lh 1.3. Every inherited-size element was ~20% large (e.g. insights item meta texts).
+  Verified no regression on partners (pixel diff unchanged 1.3-2.1).
+- Base classes that had been missing (now in KEEP_BASE): .display-contents, .w-inline-block, .hidden.
+- Live's small mono texts size to the GLYPH box (fs x 0.795, e.g. 8.33px -> 6.625px) - replicated with
+  scoped line-height .795 on .home-ins-cms-item-* mono texts. Watch for this pattern in later sections.
+- Pitfall: pretty-printing blocks inserts whitespace text nodes between blocks and inline-blocks (adds
+  strut lines); insights block now collapses inter-tag whitespace (>\s+<). Live html is minified.
+- Insights block links: our hrefs kept the extract's absolute "/insights/..." (live mirror rewrote the
+  extract's originals to relative "insights.html"); left as-is, revisit for local link fidelity.

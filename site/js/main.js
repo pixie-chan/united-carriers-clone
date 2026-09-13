@@ -7,6 +7,7 @@ import { initChrome } from './chrome.js';
 import { initWhy } from './why.js';
 import { initTesti } from './testi.js';
 import { initPartners } from './partners.js';
+import { initInsights } from './insights.js';
 
 const gsap = window.gsap;
 const Lenis = window.Lenis;
@@ -102,6 +103,7 @@ async function boot() {
   try { initWhy(); } catch (e) { console.warn('why failed', e); }
   try { initTesti(); } catch (e) { console.warn('testi failed', e); }
   try { initPartners(); } catch (e) { console.warn('partners failed', e); }
+  try { initInsights(); } catch (e) { console.warn('insights failed', e); }
   runLoader(globe);
 }
 

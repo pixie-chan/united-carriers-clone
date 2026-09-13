@@ -61,7 +61,7 @@ emb = open(f'{EXT}/embedded.css').read()
 
 KEEP_BASE = ['.w-container', '.w-layout-grid', '.w-layout-blockcontainer', '.container',
              '.txt', '.fw-med', '.img-df', '.heading', '.cl-note', '.hidden-mb', '.hidden-dsk',
-             '.home-service-new-truck-inner', '.svg', '.hidden']
+             '.home-service-new-truck-inner', '.svg', '.hidden', '.display-contents', '.w-inline-block']
 def keep_base(sel):
     return any(sel.strip().startswith(k) for k in KEEP_BASE)
 
@@ -267,6 +267,31 @@ parts.extend(partners_rules)
 parts.extend(partners_node_rules)
 parts.append(emb_partners)
 
+# ---- insights (dark article list + thumbs) ----
+ins_rules = filter_css(raw, lambda sel: 'home-ins' in sel)
+INS_IDS = ('_0603a309-83b1-05b3-e028-e154d6160042',
+           '_0603a309-83b1-05b3-e028-e154d6160050',
+           '_0603a309-83b1-05b3-e028-e154d6160053',
+           '_0603a309-83b1-05b3-e028-e154d61600b6')
+ins_node_rules = filter_css(raw, lambda sel: any(i in sel for i in INS_IDS), scale=False)
+emb_ins = '''/* ===== insights overrides from the live page's embedded custom css ===== */
+.home-ins-cms-thumb-item.active { opacity: 1; }
+.home-ins-cms-item-line { position: relative; overflow: hidden; }
+.home-ins-cms-item-line::after { content: ''; position: absolute; inset: 0; background: var(--_color---border--highlight); transform: translateX(-100%); transition: transform 0.6s ease; }
+.home-ins-cms-item:hover .home-ins-cms-item-line::after { transform: translateX(0); }
+.home-ins-toc-title.active .home-ins-toc-title-ic { transform: rotate(180deg); }
+/* raw .btn (scoped to this section: our chrome redefines .btn globally); rems x0.625 */
+.home-ins-action .btn { border: var(--border--size) solid var(--_color---border--bold); color: var(--_color---content--main); cursor: pointer; border-radius: 100vmax; flex: 1; justify-content: center; align-items: center; padding: 1.1875rem 1.75rem 1.0625rem; transition: border-color .4s, background-color .4s, color .4s; display: flex; }
+.home-ins-action .btn:hover { border-color: var(--_color---border--highlight); }
+.home-ins-action .btn-txt { text-align: center; justify-content: center; align-items: center; display: flex; }
+/* live's mono meta texts size to the glyph box (fs x 0.795, e.g. 8.33px -> 6.625px high) */
+.home-ins-cms-item-info .txt, .home-ins-cms-item-cate .txt, .home-ins-cms-item-cate-inner .txt { line-height: 0.795; }
+'''
+parts.append('\n/* ===== insights ===== */')
+parts.extend(ins_rules)
+parts.extend(ins_node_rules)
+parts.append(emb_ins)
+
 out = '\n\n'.join(parts)
 out = out.replace('url(../6a44', 'url(../assets/img/6a44')
 out = out.replace('--_color---content--black\\<deleted\\|variable-6e7d8137-8713-9ff4-5cea-f92e6216a872\\>', '--_color---unused')
@@ -393,3 +418,24 @@ pblock = ('<!-- PARTNERS:START (ported from live: logo lattice, hover swap, batc
 open(f'{SITE}/_partners_block.html', 'w').write(pblock)
 print('partners block written:', len(pblock), 'chars -> site/_partners_block.html')
 print('partners css rules:', len(partners_rules), '| partners node rules:', len(partners_node_rules))
+
+# ---------------- HTML: insights (dark article list) ----------------
+ipretty = open(f'{EXT}/ins.pretty.html').read()
+istart = ipretty.find('<section')
+iend = ipretty.find('<div class="home-faq-wrap">')
+assert istart > -1 and iend > istart, 'insights bounds not found'
+iblock = ipretty[istart:iend].rstrip()
+iblock = '<div data-section="dark" class="home-ins-wrap">\n' + iblock + '\n</div>'
+iblock = re.sub(r'style="([^"]*)"', clean_style_testi, iblock)
+iblock = iblock.replace('https://cdn.prod.website-files.com/6a44eec1ed1af2c4c403df6b/', 'assets/img/')
+iblock = iblock.replace('https://cdn.prod.website-files.com/6a44eec1ed1af2c4c403df68/', 'assets/img/')
+iblock = re.sub(r'\n{2,}', '\n', iblock)
+# minify inter-tag whitespace: pretty indentation inserts whitespace text nodes between
+# blocks and inline-blocks, which adds strut line boxes (live's html is minified; e.g.
+# desc -> inline-block action gap grew by a whole line-height: +27px). Do not indent here.
+iblock = re.sub(r'>\s+<', '><', iblock)
+iblock = ('<!-- INSIGHTS:START (ported from live: dark article list + thumb hover sync) -->\n'
+          + iblock + '\n  <!-- INSIGHTS:END -->')
+open(f'{SITE}/_insights_block.html', 'w').write(iblock)
+print('insights block written:', len(iblock), 'chars -> site/_insights_block.html')
+print('insights css rules:', len(ins_rules), '| insights node rules:', len(ins_node_rules))

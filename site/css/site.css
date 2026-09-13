@@ -40,8 +40,9 @@ body {
   background: var(--black);
   color: var(--white);
   font-family: var(--font-body);
-  font-size: 1.2rem;
-  line-height: 1.33;
+  /* live .body = 1.6rem @ 8.333px html rem = 13.33px = 1rem in our rem system; lh 1.3 */
+  font-size: 1rem;
+  line-height: 1.3;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }

@@ -83,6 +83,18 @@ else:
     html = html.replace('<!-- remaining sections (partners, insights, faq, footer): built next -->',
                         '<!-- remaining sections (insights, faq, footer): built next -->')
 
+# 10. insights block after PARTNERS:END (replace-capable)
+if 'INSIGHTS:START' in html:
+    a = html.find('<!-- INSIGHTS:START')
+    b2 = html.find('<!-- INSIGHTS:END -->') + len('<!-- INSIGHTS:END -->')
+    ins = open('/home/zen/projects/united-carriers-clone/site/_insights_block.html').read()
+    html = html[:a] + ins + html[b2:]
+else:
+    ins = open('/home/zen/projects/united-carriers-clone/site/_insights_block.html').read()
+    idx = html.find('<!-- PARTNERS:END -->')
+    assert idx > -1, 'no partners marker'
+    html = html[:idx + len('<!-- PARTNERS:END -->')] + '\n\n' + ins + '\n' + html[idx + len('<!-- PARTNERS:END -->'):]
+
 if html != orig:
     open(P, 'w').write(html)
     print('index.html updated, len', len(html))
