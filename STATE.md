@@ -378,3 +378,20 @@ y=11400: 81.1 and y=12100: 117.3 (handoff zone) = DELEGATED to opencode worker s
 - Verified worker model: gateway/ds/deepseek-v4-pro (nonce + coding test passed).
   spark/muse-spark chat path is broken (responses-only).
 - Spawn: ~/scripts/oc-spawn.sh <name> <dir> "<task>" gateway/ds/deepseek-v4-pro
+
+## Session log 2026-09-13 (continuation 8): SERVICE SEAM FIXED (opencode worker, verified)
+
+- Seam fix by user-run opencode worker (muse-spark-1.3-contributor, $0.10): tail.js now ports the real
+  live timelines (tlTruckRot, tlRoadTransition, tlTruckPosition, tlSpeedometerRemove) with live trigger
+  anchors; build-port.py: added .home-service-road-big translateX(-100vw) embedded rule; rest_state
+  reduced to placement-only (.uc-tail transparent, no baked element states); speed ticker targets
+  [data-speed].
+- INDEPENDENTLY VERIFIED by re-running service-check.py: y=11400 = 3.2, y=12100 = 0.6 (worker said
+  3.1/0.6), all other anchors unchanged (5.4/2.3/2.4/1.9/2.6/5.1/2.3/2.2/5.7), canvas parity identical
+  (10395/1858), zero page errors on both pages. Committed f00244d (after b3c75fd = the port itself).
+- FULL SERVICE SECTION + ALL 8 SECTIONS NOW GREEN. docH 28238 vs live 28229.
+- WORKFLOW NOW STANDING: heavy codework goes out as paste-able prompts to the user's opencode harness
+  (muse-spark-1.3-contributor via spark/ocg/muse-spark-1.3-contributor; start 9router.service first);
+  results get verified on disk by re-running harnesses before any trust.
+- NEXT (open threads): mobile pass, page-base theme audit (white model vs our dark base), 1920 absolute
+  offset audit (pre-why sections run +1680px tall at 1920), full-page heroes/why polish leftovers.
