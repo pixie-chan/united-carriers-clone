@@ -9,6 +9,7 @@ import { initTesti } from './testi.js';
 import { initPartners } from './partners.js';
 import { initInsights } from './insights.js';
 import { initFaq } from './faq.js';
+import { initFooter } from './footer.js';
 
 const gsap = window.gsap;
 const Lenis = window.Lenis;
@@ -106,6 +107,7 @@ async function boot() {
   try { initPartners(); } catch (e) { console.warn('partners failed', e); }
   try { initInsights(); } catch (e) { console.warn('insights failed', e); }
   try { initFaq(); } catch (e) { console.warn('faq failed', e); }
+  try { initFooter(); } catch (e) { console.warn('footer failed', e); }
   runLoader(globe);
 }
 

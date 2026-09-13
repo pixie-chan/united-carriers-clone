@@ -333,6 +333,40 @@ parts.extend(cta_rules)
 parts.extend(cta_node_rules)
 parts.append(emb_cta)
 
+# ---- footer (particles + marquee + switcher) ----
+footer_rules = filter_css(raw, lambda sel: sel.strip().startswith('.footer') or 'footer-' in sel)
+_fopretty = open(f'{EXT}/footer.pretty.html').read()
+FOOT_IDS = tuple(sorted(set(re.findall(r'id="w-node-([^"]+)"', _fopretty))))
+footer_node_rules = filter_css(raw, lambda sel: any(i in sel for i in FOOT_IDS), scale=False)
+# the .link-* utility family (footer link hover swap + icon) + linkedin popup styles
+footer_link_rules = filter_css(raw, lambda sel: (sel.strip() == '.link' or sel.strip().startswith(('.link-', '.link:', '.link,', '.linkedin'))))
+emb_footer = '''/* ===== footer overrides from the live page's embedded custom css ===== */
+/* live footer inherits #111 text from the page base; our body is dark-based (white text),
+   so the footer re-supplies the light default (theme audit thread) */
+.footer-wrap { color: var(--_color---content--main); }
+/* text-reveal + link-hover utilities (embedded style block #4) */
+.split-line-p { --bg-progress: 0; color: transparent; background: linear-gradient(90deg, var(--color-final, var(--_color---content--main)) 0%, var(--color-final, var(--_color---content--main)) 30%, var(--_color---content--brand) 40%, transparent 50%, transparent 60%, transparent 100%); background-size: 350% 100%; background-position-x: calc((100 - var(--bg-progress)) * 1%); background-clip: text; }
+.split-line-p span { display: block; }
+.line-mask { overflow: hidden; }
+.line-inner { display: block; will-change: transform; }
+.txt:not(.w-input):empty { display: none; }
+.hover-line, .line-hover-inner { --line-spacing: 1rem; position: relative; overflow: hidden; display: inline-block; vertical-align: bottom; }
+.hover-line:not([data-hover='line-inner'])::before, .hover-line:not([data-hover='line-inner'])::after, .line-hover-inner::before, .line-hover-inner::after { content: ''; position: absolute; display: block; bottom: 0.2em; width: 100%; height: var(--border--size); background-color: currentColor; -webkit-transition: 0.6s transform cubic-bezier(0.66, 0, 0.15, 1); transition: 0.6s transform cubic-bezier(0.66, 0, 0.15, 1); }
+.hover-line:not([data-hover='line-inner'])::before, .line-hover-inner::before { left: 0; }
+.hover-line:not([data-hover='line-inner'])::after, .line-hover-inner:after { left: calc(-1 * var(--line-spacing)); transform: translateX(-100%); }
+.us-none-select { -webkit-user-select: none; -webkit-user-drag: none; }
+/* live's cap-height mono text boxes (embedded block #4); explains the glyph-box sizing */
+[data-cap-height], [data-wf--text--text-styles='mono'] { text-box-edge: cap alphabetic; text-box-trim: trim-both; }
+/* marquee keyframes (embedded) */
+@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+.anim-marquee { animation: marquee 30s linear infinite; }
+'''
+parts.append('\n/* ===== footer ===== */')
+parts.extend(footer_rules)
+parts.extend(footer_node_rules)
+parts.extend(footer_link_rules)
+parts.append(emb_footer)
+
 out = '\n\n'.join(parts)
 out = out.replace('url(../6a44', 'url(../assets/img/6a44')
 out = out.replace('--_color---content--black\\<deleted\\|variable-6e7d8137-8713-9ff4-5cea-f92e6216a872\\>', '--_color---unused')
@@ -516,3 +550,22 @@ cblock = ('<!-- CTA:START (ported from live: wave circles, static) -->\n'
 open(f'{SITE}/_cta_block.html', 'w').write(cblock)
 print('cta block written:', len(cblock), 'chars -> site/_cta_block.html')
 print('cta css rules:', len(cta_rules), '| cta node rules:', len(cta_node_rules))
+
+# ---------------- HTML: footer ----------------
+fopretty = open(f'{EXT}/footer.pretty.html').read()
+# extract starts mid-tag at `footer-wrap">`: reconstruct the opening div
+assert fopretty.lstrip().startswith('footer-wrap">'), 'footer extract head unexpected'
+foblock = '<div id="w-node-_0e256e74-1667-c06f-27cd-83dda0c65bd9-a0c65bd9" class="' + fopretty.lstrip()
+foend = foblock.find('</footer>') + len('</footer>')
+foend = foblock.find('</div>', foend) + len('</div>')   # close of .footer-wrap
+foblock = foblock[:foend]
+foblock = re.sub(r'style="([^"]*)"', clean_style, foblock)
+foblock = foblock.replace('https://cdn.prod.website-files.com/6a44eec1ed1af2c4c403df6b/', 'assets/img/')
+foblock = foblock.replace('https://cdn.prod.website-files.com/6a44eec1ed1af2c4c403df68/', 'assets/img/')
+foblock = re.sub(r'\n{2,}', '\n', foblock)
+foblock = re.sub(r'>\s+<', '><', foblock)
+foblock = ('<!-- FOOTER:START (ported from live: particle logo, marquees, info switcher) -->\n'
+           + foblock + '\n  <!-- FOOTER:END -->')
+open(f'{SITE}/_footer_block.html', 'w').write(foblock)
+print('footer block written:', len(foblock), 'chars -> site/_footer_block.html')
+print('footer css rules:', len(footer_rules), '| footer node rules:', len(footer_node_rules))

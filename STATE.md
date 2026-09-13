@@ -302,3 +302,23 @@ that were never probed or committed. This pass verified, completed and committed
   display:none on DESKTOP (raw css: base display:none, shown in a media variant) - our first filter
   missed it because the base rule is grouped: `.terms-main-toc-title-ic,.cta-btn-wrap{display:none}`;
   noted for future filters: check GROUPED selectors, not just prefixes.
+
+## Session log 2026-09-13 (continuation 6): FOOTER built - ALL SECTIONS COMPLETE
+
+- Footer BUILT (particle logo canvas, 2 info marquees, info switcher, link hover swaps,
+  reveals, linkedin popup styles): wrap h 858 EXACT, .footer 873 vs 863, docH 28238 vs
+  28229 (+9px over the whole page!), page pixel diffs 2.3 (handoff) / ~14 (bottom-of-page,
+  dominated by animation-phase noise: 12s wave circles, particle settle, marquee phase).
+- ParticleText (bt/vt/Ot) ported: canvas 2059x318 both, sampled particle pixels 197 = 197.
+- Marquee (ft): lists rebuilt with anim-marquee + per-item durations; matches live.
+- Switcher (kt): 2 btns, activeBg xPercent + squash; matches live.
+- Fixes found during QA: .link-* utility family + .linkedin popped missing from filters;
+  footer ids derived from block (some have no leading underscore, some have c09/c25 keys
+  that a too-specific stem missed); .display-contents; .hidden/.w-inline-block utilities;
+  footer text color was inheriting our white body (footer-wrap now re-supplies #111).
+- The reveal port has a known safe deviation: no width pinning in mtReveal (live pins
+  offsetWidth+5 at boot; we run pre-fonts where that wraps text into columns).
+
+ALL EIGHT SECTIONS NOW BUILT: hero/intro/service/tail/why/testi/partners/insights/faq/
+cta/footer. Next threads: mobile pass, theme audit (see #6), 1920 absolute-offset audit,
+full end-to-end QA pass, polish items in STATE open threads.

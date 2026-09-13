@@ -119,6 +119,18 @@ else:
     assert idx > -1, 'no faq marker'
     html = html[:idx + len('<!-- FAQ:END -->')] + '\n\n' + cta + '\n' + html[idx + len('<!-- FAQ:END -->'):]
 
+# 13. footer block after CTA:END (replace-capable)
+if 'FOOTER:START' in html:
+    a = html.find('<!-- FOOTER:START')
+    b2 = html.find('<!-- FOOTER:END -->') + len('<!-- FOOTER:END -->')
+    fo = open('/home/zen/projects/united-carriers-clone/site/_footer_block.html').read()
+    html = html[:a] + fo + html[b2:]
+else:
+    fo = open('/home/zen/projects/united-carriers-clone/site/_footer_block.html').read()
+    idx = html.find('<!-- CTA:END -->')
+    assert idx > -1, 'no cta marker'
+    html = html[:idx + len('<!-- CTA:END -->')] + '\n\n' + fo + '\n' + html[idx + len('<!-- CTA:END -->'):]
+
 if html != orig:
     open(P, 'w').write(html)
     print('index.html updated, len', len(html))
