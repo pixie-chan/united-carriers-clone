@@ -5,6 +5,7 @@ import { initSections } from './sections.js';
 import { initTail } from './tail.js';
 import { initChrome } from './chrome.js';
 import { initWhy } from './why.js';
+import { initTesti } from './testi.js';
 
 const gsap = window.gsap;
 const Lenis = window.Lenis;
@@ -98,6 +99,7 @@ async function boot() {
   initSections().catch(e => console.warn('sections failed', e));
   try { initTail(); } catch (e) { console.warn('tail failed', e); }
   try { initWhy(); } catch (e) { console.warn('why failed', e); }
+  try { initTesti(); } catch (e) { console.warn('testi failed', e); }
   runLoader(globe);
 }
 

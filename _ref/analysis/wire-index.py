@@ -51,6 +51,22 @@ else:
 
 # 7. main.js import hook noted (handled separately)
 
+# 8. testi block after WHY:END (replace if already present, so re-runs pick up regen)
+if 'TESTI:START' in html:
+    a = html.find('<!-- TESTI:START')
+    b2 = html.find('<!-- TESTI:END -->') + len('<!-- TESTI:END -->')
+    testi = open('/home/zen/projects/united-carriers-clone/site/_testi_block.html').read()
+    html = html[:a] + testi + html[b2:]
+else:
+    testi = open('/home/zen/projects/united-carriers-clone/site/_testi_block.html').read()
+    idx = html.find('<!-- WHY:END -->')
+    assert idx > -1, 'no why marker'
+    html = html[:idx + len('<!-- WHY:END -->')] + '\n\n' + testi + '\n' + html[idx + len('<!-- WHY:END -->'):]
+    html = html.replace('<!-- why/ocean, testimonials, partners, insights, faq, footer: built next -->',
+                        '<!-- partners, insights, faq, footer: built next -->')
+    html = html.replace('<!-- remaining sections (why/ocean, testimonials, partners, insights, faq, footer): built next -->',
+                        '<!-- remaining sections (partners, insights, faq, footer): built next -->')
+
 if html != orig:
     open(P, 'w').write(html)
     print('index.html updated, len', len(html))

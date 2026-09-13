@@ -199,6 +199,37 @@ parts.extend(why_rules)
 parts.append(emb_why)
 parts.extend(wid_rules)
 
+# ---- testi (plane flyover + testimonial wipe) ----
+testi_rules = filter_css(raw, lambda sel: 'home-testi' in sel)
+# grid-area assignments that put the plane and the content in the SAME grid cell
+TESTI_IDS = ('d93b28c9-8098-8e98-b09a-60fd782943e9',
+             '_8c2bb2a7-341e-2863-3238-551e171fae69',
+             '_8c2bb2a7-341e-2863-3238-551e171fae6b',
+             '_8c2bb2a7-341e-2863-3238-551e171fae6d',
+             '_8c2bb2a7-341e-2863-3238-551e171fae81')
+testi_node_rules = filter_css(raw, lambda sel: any(i in sel for i in TESTI_IDS), scale=False)
+testi_extra = filter_css(
+    raw,
+    lambda sel: sel.strip().startswith(('.fw-bold', '.w-richtext', '.w-dyn-list',
+                                        '.w-dyn-items', '.w-dyn-item')),
+    scale=False)
+emb_testi = '''/* ===== testi overrides from the live page's embedded custom css ===== */
+.home-testi { margin-top: -200vh; }
+.home-testi { --overlap-clip: 60; }
+.home-testi-plane { opacity: 1; }
+.home-testi-plane-img-shadow { transform: translate(calc(var(--pos-x, 0) * 1%), calc(var(--pos-y, 0) * 1%)) scale(var(--scale, 1)); }
+/* webflow base element defaults, scoped to this section (global p margins would shift
+   the earlier absolutely-positioned custom blocks) */
+.home-testi p { margin-top: 0; margin-bottom: 10px; }
+.home-testi .w-richtext > *:first-child { margin-top: 0; }
+.home-testi .w-richtext > *:last-child { margin-bottom: 0; }
+'''
+parts.append('\n/* ===== testi (plane + testimonial wipe) ===== */')
+parts.extend(testi_rules)
+parts.extend(testi_node_rules)
+parts.extend(testi_extra)
+parts.append(emb_testi)
+
 out = '\n\n'.join(parts)
 out = out.replace('url(../6a44', 'url(../assets/img/6a44')
 out = out.replace('--_color---content--black\\<deleted\\|variable-6e7d8137-8713-9ff4-5cea-f92e6216a872\\>', '--_color---unused')
@@ -278,3 +309,30 @@ if not wblock.lstrip().startswith('<!-- WHY:START'):
     wblock = '<!-- WHY:START (ported from live: sticky ocean + ship + clouds + why list) -->\n' + wblock + '\n  <!-- WHY:END -->'
 open(f'{SITE}/_why_block.html', 'w').write(wblock)
 print('why block written:', len(wblock), 'chars -> site/_why_block.html')
+
+# ---------------- HTML: testi (testimonial plane section) ----------------
+tpretty = open(f'{EXT}/testi.pretty.html').read()
+tstart = tpretty.find('<section')
+tend = tpretty.find('</section>') + len('</section>')
+assert tstart > -1 and tend > len('</section>'), 'testi section bounds not found'
+tblock = tpretty[tstart:tend]
+tblock = '<div class="home-testi-wrap">\n' + tblock + '\n</div>'
+
+def clean_style_testi(m):
+    val = m.group(1)
+    if (('transform' in val) or ('translate' in val) or ('opacity' in val)
+            or ('visibility' in val) or ('--scale-factor' in val) or ('top:' in val)
+            or ('width:' in val)):
+        return ''
+    return m.group(0)
+
+tblock = re.sub(r'style="([^"]*)"', clean_style_testi, tblock)
+tblock = tblock.replace('https://cdn.prod.website-files.com/6a44eec1ed1af2c4c403df6b/', 'assets/img/')
+tblock = tblock.replace('https://cdn.prod.website-files.com/6a44eec1ed1af2c4c403df68/', 'assets/img/')
+tblock = re.sub(r'\n{2,}', '\n', tblock)
+tblock = '\n'.join('    ' + l if l.strip() else l for l in tblock.split('\n'))
+tblock = ('<!-- TESTI:START (ported from live: plane flyover + testimonial wipe) -->\n'
+          + tblock + '\n  <!-- TESTI:END -->')
+open(f'{SITE}/_testi_block.html', 'w').write(tblock)
+print('testi block written:', len(tblock), 'chars -> site/_testi_block.html')
+print('testi css rules:', len(testi_rules), '| testi extras:', len(testi_extra))

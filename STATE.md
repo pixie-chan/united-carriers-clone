@@ -84,7 +84,8 @@ to a human). Keep the rebuild code clean and documented. Resume phrase: "resume 
 
 ## Open threads / next steps (priority order)
 
-1. Build the remaining sections in order: testi -> partners -> insights -> FAQ -> footer (same
+1. Sections: testi BUILT + geometry-verified at 1440x900 (2026-09-13; visual pass over the captured
+   composites + 1920 check still pending). Next in order: partners -> insights -> FAQ -> footer (same
    port pipeline: raw css extract -> build-port list, markup from extracts, JS from pretty/Home.js).
 2. After sections: mobile pass (media queries are already ported into sections2.css).
 3. Service choreography polish (first/second screens) to fix y3220.
@@ -217,3 +218,16 @@ that were never probed or committed. This pass verified, completed and committed
   design unless wanted.
 - Tooling: ship-water-check.py (paired capture), ship-water-check2.py (robust: stepped scroll + liveness
   check + retry), both kept in _ref/analysis; QA imagery in repro2/whypair/ (gitignored).
+
+## Session log 2026-09-13 (testi build)
+
+- Testi (plane flyover + testimonial wipe) BUILT via the port pipeline: build-port.py now filters the
+  .home-testi css + the w-node grid rules (plane and content share grid cell 1/1, was the missing piece)
+  + webflow base p margins SCOPED to the section (a global p rule would shift the early abs-positioned
+  blocks); _testi_block.html generated from testi.pretty.html; wire-index.py inserts after WHY:END
+  (replace-capable for re-runs); js/testi.js ports the overlap timeline (--overlap-clip -60->180, plane
+  scale 1->1.3, shadow vars, why-cloud push) + the item rise/fade reveal; main.js calls initTesti.
+- VERIFIED 1440x900: geometry all EXACT (wrap h 2991, content-inner 1911, list 1496, item2 559, p mb 10px);
+  timeline values match live to <0.1 units (clip/scale/shadow/img rect at every phase); zero console
+  errors. Earlier f=3.0 sticky "mismatch" was page truncation (testi is last section so far), not a bug.
+- Paired captures at 10 phases in repro2/testi1440/ (gitignored). Visual review + 1920x1080 pass pending.
