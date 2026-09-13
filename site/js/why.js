@@ -105,6 +105,9 @@ void main() {
   float vshade = clamp((suv.y - 0.5) * 2.0, -1.0, 1.0);
   col *= 1.0 + 0.10 * vshade;
 
+  // the sea settles and darkens as the dolly pulls the camera back (live's late-phase look)
+  col *= 1.0 - 0.16 * smoothstep(0.45, 0.10, uShipScale);
+
   // ---- wakes (screen space, anchored to the ship's DOM box; stern at the TOP of the box) ----
   float dx = abs(suv.x - uShipUv.x);
   float sc = uShipScale;
@@ -164,7 +167,8 @@ void main() {
       float soft = .45 + .85 * smoothstep(.30, .80, sp2 * .6 + sp * .4);
       float wash = exp(-wr * 1.35) * soft;
       float wrGate = smoothstep(0.004, 0.02, halfW);
-      col += vec3(.055, .105, .21) * min(wash * wrGate, 1.2);
+      float washTaper = smoothstep(0.04, 0.12, halfW);   // field calms as the ship shrinks
+      col += vec3(.055, .105, .21) * min(wash * wrGate * washTaper, 1.2);
     }
 
     foam *= scGate;
@@ -325,23 +329,24 @@ export function initWhy() {
       scrub: true
     }
   });
-  // Positions are absolute (timeline seconds) chosen to match the live's visual pacing:
-  // at 19600 only the left mist (cloud-3 decor) is visible; clouds arrive between ~19800 and 21400.
+  // Positions are absolute (timeline seconds) calibrated against the live at 1440x900:
+  // left mist fades out ~19150-19600 (t 3.2), cloud sheet ramps 19350-20150 (t 4.2-8.9),
+  // items follow c2 -> c7 -> c1 -> c3 -> c5 -> c4 -> c6 each stretched ~4-5s.
   tlCloud.to(q1('.home-why-cloud-decor-item.cloud-3'), { x: 0, scale: 1, opacity: .3, filter: 'blur(0px)', ease: silk, duration: 2.4 }, 0)
     .to(q1('.home-why-cloud-decor-item.cloud-1'), { x: '20vw', y: 30, scale: .6, opacity: 0, ease: silk, duration: 2.4 }, 0)
     .to(q1('.home-why-cloud-decor-item.cloud-2'), { x: '50vw', y: 120, scale: .6, opacity: 0, ease: silk, duration: 2.4 }, 0)
-    .to(q1('.home-why-cloud-decor-item.cloud-3'), { x: '-5vw', scale: 2, opacity: 0, filter: 'blur(2px)', ease: silk, duration: 3.6 }, 6.0)
+    .to(q1('.home-why-cloud-decor-item.cloud-3'), { x: '-5vw', scale: 2, opacity: 0, filter: 'blur(2px)', ease: silk, duration: 2.6 }, 3.2)
     .to(q1('.home-why-main'), { autoAlpha: .9, ease: silk, duration: 2.4 }, 6.2)
     .to(shipWrap, { scale: .9, duration: 2.8, ease: silk, onUpdate: () => { wrapScale = gsap.getProperty(shipWrap, 'scaleY') || 1; } }, 6.3)
-    .to(q1('.home-why-cloud-overlap-bg'), { autoAlpha: 1, ease: csmooth, duration: 3.4 }, 7.6)
-    .to(q1('.home-why-cloud-overlap'), { autoAlpha: 1, ease: csmooth, duration: 3.0 }, 7.8)
-    .to(q1('.home-why-cloud-overlap-item.cloud-2'), { scale: 1, opacity: 1, ease: csmooth, duration: 3.4 }, 8.4)
-    .to(q1('.home-why-cloud-overlap-item.cloud-7'), { scale: 1, opacity: 1, ease: csmooth, duration: 3.0 }, 8.9)
-    .to(q1('.home-why-cloud-overlap-item.cloud-1'), { scale: 1, opacity: 1, ease: csmooth, duration: 3.6 }, 9.3)
-    .to(q1('.home-why-cloud-overlap-item.cloud-3'), { scale: 1, opacity: 1, ease: csmooth, duration: 3.0 }, 10.2)
-    .to(q1('.home-why-cloud-overlap-item.cloud-5'), { scale: 1, opacity: 1, ease: csmooth, duration: 3.0 }, 10.7)
-    .to(q1('.home-why-cloud-overlap-item.cloud-4'), { scale: 1, opacity: 1, ease: csmooth, duration: 3.0 }, 11.2)
-    .to(q1('.home-why-cloud-overlap-item.cloud-6'), { scale: 1, opacity: 1, ease: csmooth, duration: 3.2 }, 11.7)
+    .to(q1('.home-why-cloud-overlap-bg'), { autoAlpha: 1, ease: csmooth, duration: 5.0 }, 5.6)
+    .to(q1('.home-why-cloud-overlap'), { autoAlpha: 1, ease: csmooth, duration: 5.0 }, 5.6)
+    .to(q1('.home-why-cloud-overlap-item.cloud-2'), { scale: 1, opacity: 1, ease: csmooth, duration: 5.2 }, 5.9)
+    .to(q1('.home-why-cloud-overlap-item.cloud-7'), { scale: 1, opacity: 1, ease: csmooth, duration: 4.2 }, 7.1)
+    .to(q1('.home-why-cloud-overlap-item.cloud-1'), { scale: 1, opacity: 1, ease: csmooth, duration: 5.0 }, 7.5)
+    .to(q1('.home-why-cloud-overlap-item.cloud-3'), { scale: 1, opacity: 1, ease: csmooth, duration: 4.6 }, 8.25)
+    .to(q1('.home-why-cloud-overlap-item.cloud-5'), { scale: 1, opacity: 1, ease: csmooth, duration: 4.4 }, 9.4)
+    .to(q1('.home-why-cloud-overlap-item.cloud-4'), { scale: 1, opacity: 1, ease: csmooth, duration: 4.2 }, 10.1)
+    .to(q1('.home-why-cloud-overlap-item.cloud-6'), { scale: 1, opacity: 1, ease: csmooth, duration: 4.0 }, 10.7)
     .to(holdTail, { v: 1, duration: 9.1 }, 14.9);   // padding so the reveal pacing lands right
 
   // ---------- text wrap reveal ----------

@@ -197,6 +197,19 @@ parts.append(rest_state)
 parts.append('\n/* ===== why / ocean ===== */')
 parts.extend(why_rules)
 parts.append(emb_why)
+why_extra = '''/* cloud items: intrinsic size before the lazy imgs load, so GSAP's boot-time
+   resolution of the CSS translate(-50%, +50%) runs against the final box height
+   (otherwise the Y offset caches against a ~20px pre-load box and the items sit
+   ~490px too high for the rest of the timeline) */
+.home-why-cloud-overlap-item.cloud-1,
+.home-why-cloud-overlap-item.cloud-2,
+.home-why-cloud-overlap-item.cloud-7 { aspect-ratio: 2604 / 1177; }
+.home-why-cloud-overlap-item.cloud-3,
+.home-why-cloud-overlap-item.cloud-4,
+.home-why-cloud-overlap-item.cloud-5,
+.home-why-cloud-overlap-item.cloud-6 { aspect-ratio: 1982 / 1077; }
+'''
+parts.append(why_extra)
 parts.extend(wid_rules)
 
 # ---- testi (plane flyover + testimonial wipe) ----

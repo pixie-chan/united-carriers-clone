@@ -231,3 +231,23 @@ that were never probed or committed. This pass verified, completed and committed
   timeline values match live to <0.1 units (clip/scale/shadow/img rect at every phase); zero console
   errors. Earlier f=3.0 sticky "mismatch" was page truncation (testi is last section so far), not a bug.
 - Paired captures at 10 phases in repro2/testi1440/ (gitignored). Visual review + 1920x1080 pass pending.
+
+## Session log 2026-09-13 (continuation): testi handoff + cloud timing
+
+- Testi visual pass + 1920 check DONE. Testi timeline matches live at BOTH viewports (clip/scale/img
+  rect to <0.5px at 1440 and sub-unit at 1920; geometry: testi wrap h exact 3825 both at 1920).
+- Why-exit cloud arrival was ~200px LATE vs live; recalibrated all 9 cloud-overlap tweens against a
+  measured opacity ramp (live: sheet 19350-20150 @1440; items c2->c7->c1->c3->c5->c4->c6). Now within
+  ~0.05-0.1 opacity at every sampled scroll.
+- GSAP %-TRANSFORM CACHING BUG (important): cloud items carry CSS translate(-50%, +50%); GSAP caches
+  the % as px at boot, when lazy images are unloaded and the item box is ~21px tall -> the +50% Y
+  offset froze at +10px instead of +490/+449/+254 for c1/c5/c6 (only positive-Y items; negative-Y
+  items fine). Fix: explicit aspect-ratio per item (build-port why_extra) so the box has its final
+  height before GSAP touches it. ty now matches live exactly (490.4/448.7/254.3).
+- Late-phase water: added dolly-progress darkening (-16%) + wash taper; handoff pixel grids now
+  mean|diff| ~26-34 (was 147-180). RESIDUAL (open): late-phase top-strip is still ~+30-60 (sum RGB)
+  brighter than live in patches (diffuse, not structural; visible only in side-by-side stills).
+- Note: at 1920 the pre-why sections run +1680px taller than live (why top: live 18400 vs reb 20080).
+  Section-relative phases are all exact; the absolute page offset needs an audit of hero/intro/
+  service/tail tops at 1920 (add to QA thread).
+- QA scripts: handoff-probe.py, testi-probe.py, verify-1920.py (kept).

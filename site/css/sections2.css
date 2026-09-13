@@ -544,6 +544,19 @@
     mix-blend-mode: soft-light; }
 .home-why-main-item-ic .icon circle { animation-name: in-icon; }
 
+/* cloud items: intrinsic size before the lazy imgs load, so GSAP's boot-time
+   resolution of the CSS translate(-50%, +50%) runs against the final box height
+   (otherwise the Y offset caches against a ~20px pre-load box and the items sit
+   ~490px too high for the rest of the timeline) */
+.home-why-cloud-overlap-item.cloud-1,
+.home-why-cloud-overlap-item.cloud-2,
+.home-why-cloud-overlap-item.cloud-7 { aspect-ratio: 2604 / 1177; }
+.home-why-cloud-overlap-item.cloud-3,
+.home-why-cloud-overlap-item.cloud-4,
+.home-why-cloud-overlap-item.cloud-5,
+.home-why-cloud-overlap-item.cloud-6 { aspect-ratio: 1982 / 1077; }
+
+
 #w-node-_1c8a6a0f-02bc-6c80-8ad5-417920171824-c403df38 { grid-area:2/1/3/-1 }
 
 #w-node-_483eca59-bc59-4daf-e5c4-9e3ad8ef3754-c403df38 { grid-area:1/1/3/-1 }
