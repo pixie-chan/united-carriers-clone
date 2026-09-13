@@ -293,3 +293,12 @@ that were never probed or committed. This pass verified, completed and committed
 - FAQ numbers are CSS counters (faq-counter, decimal-leading-zero) via embedded rules + fs-10 mono with
   the glyph-box line-height 0.795.
 - Same page-base theme pattern: .home-faq-wrap paints its own white (live: page-level .main bg).
+
+## Session log 2026-09-13 (continuation 5): cta built
+
+- CTA BUILT (wave circles banner, static): geometry EXACT (h 540=540; title/desc/circles within 4px),
+  pixel diff 7.4 (residual = the 12s wave animation phase difference between captures; irreducible in
+  stills). No scroll animations on the CTA (verified on live: title/desc static). cta-btn-wrap is
+  display:none on DESKTOP (raw css: base display:none, shown in a media variant) - our first filter
+  missed it because the base rule is grouped: `.terms-main-toc-title-ic,.cta-btn-wrap{display:none}`;
+  noted for future filters: check GROUPED selectors, not just prefixes.

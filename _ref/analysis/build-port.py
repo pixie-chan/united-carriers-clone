@@ -317,6 +317,22 @@ parts.extend(faq_rules)
 parts.extend(faq_node_rules)
 parts.append(emb_faq)
 
+# ---- cta (wave circles banner) ----
+cta_rules = filter_css(raw, lambda sel: sel.strip().startswith('.cta') or 'cta-btn-wrap' in sel)
+CTA_IDS = ('16cd6236-a00c-1313-b86e-e3a622eca',)
+cta_node_rules = filter_css(raw, lambda sel: any(i in sel for i in CTA_IDS), scale=False)
+emb_cta = '''/* ===== cta overrides from the live page's embedded custom css ===== */
+.anim-wave { animation: wave 12s linear infinite; }
+@keyframes wave { 0% { transform: scale(1); opacity: 0; } 20%, 80% { opacity: 0.65; } 60% { opacity: 1; } 100% { transform: scale(3); opacity: 0; } }
+/* raw .btn scoped (our chrome redefines .btn); rems x0.625 */
+.cta-btn-wrap .btn { border: var(--border--size) solid var(--_color---border--bold); color: var(--_color---content--main); cursor: pointer; border-radius: 100vmax; flex: 1; justify-content: center; align-items: center; padding: 1.1875rem 1.75rem 1.0625rem; transition: border-color .4s, background-color .4s, color .4s; display: flex; }
+.cta-btn-wrap .btn-txt { text-align: center; justify-content: center; align-items: center; display: flex; }
+'''
+parts.append('\n/* ===== cta ===== */')
+parts.extend(cta_rules)
+parts.extend(cta_node_rules)
+parts.append(emb_cta)
+
 out = '\n\n'.join(parts)
 out = out.replace('url(../6a44', 'url(../assets/img/6a44')
 out = out.replace('--_color---content--black\\<deleted\\|variable-6e7d8137-8713-9ff4-5cea-f92e6216a872\\>', '--_color---unused')
@@ -484,3 +500,19 @@ fblock = ('<!-- FAQ:START (ported from live: accordion list, title mask reveal) 
 open(f'{SITE}/_faq_block.html', 'w').write(fblock)
 print('faq block written:', len(fblock), 'chars -> site/_faq_block.html')
 print('faq css rules:', len(faq_rules), '| faq node rules:', len(faq_node_rules))
+
+# ---------------- HTML: cta (wave circles banner, static) ----------------
+cstart = fpretty.find('<div class="home-cta-wrap">')
+cend = fpretty.find('<div id="w-node-_0e256e74')
+assert cstart > -1 and cend > cstart, 'cta bounds not found'
+cblock = fpretty[cstart:cend].rstrip()
+cblock = re.sub(r'style="([^"]*)"', clean_style, cblock)
+cblock = cblock.replace('https://cdn.prod.website-files.com/6a44eec1ed1af2c4c403df6b/', 'assets/img/')
+cblock = cblock.replace('https://cdn.prod.website-files.com/6a44eec1ed1af2c4c403df68/', 'assets/img/')
+cblock = re.sub(r'\n{2,}', '\n', cblock)
+cblock = re.sub(r'>\s+<', '><', cblock)
+cblock = ('<!-- CTA:START (ported from live: wave circles, static) -->\n'
+          + cblock + '\n  <!-- CTA:END -->')
+open(f'{SITE}/_cta_block.html', 'w').write(cblock)
+print('cta block written:', len(cblock), 'chars -> site/_cta_block.html')
+print('cta css rules:', len(cta_rules), '| cta node rules:', len(cta_node_rules))

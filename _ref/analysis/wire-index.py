@@ -107,6 +107,18 @@ else:
     assert idx > -1, 'no insights marker'
     html = html[:idx + len('<!-- INSIGHTS:END -->')] + '\n\n' + faq + '\n' + html[idx + len('<!-- INSIGHTS:END -->'):]
 
+# 12. cta block after FAQ:END (replace-capable)
+if 'CTA:START' in html:
+    a = html.find('<!-- CTA:START')
+    b2 = html.find('<!-- CTA:END -->') + len('<!-- CTA:END -->')
+    cta = open('/home/zen/projects/united-carriers-clone/site/_cta_block.html').read()
+    html = html[:a] + cta + html[b2:]
+else:
+    cta = open('/home/zen/projects/united-carriers-clone/site/_cta_block.html').read()
+    idx = html.find('<!-- FAQ:END -->')
+    assert idx > -1, 'no faq marker'
+    html = html[:idx + len('<!-- FAQ:END -->')] + '\n\n' + cta + '\n' + html[idx + len('<!-- FAQ:END -->'):]
+
 if html != orig:
     open(P, 'w').write(html)
     print('index.html updated, len', len(html))

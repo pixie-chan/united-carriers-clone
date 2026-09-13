@@ -1116,3 +1116,77 @@
 .home-faq-main-item.active .home-faq-main-item-dot { background-color: var(--_color---content--main); }
 .home-faq-main-item:hover .home-faq-main-item-dot { background-color: var(--_color---content--main); }
 .home-faq-main-item:hover .home-faq-main-item-title { color: var(--_color---content--main); }
+
+
+
+/* ===== cta ===== */
+
+.cta { z-index:3;background-color:var(--_color---bg--main);color:var(--_color---content--main);--_color---bg--main:var(--_color---m-black);--_color---content--main:var(--_color---m-white);--_color---content--note:#ffffff3d;--_color---border--bold:#ffffff52;--_color---bg--sf-2:var(--_color---m-white);--_color---border--highlight:var(--_color---m-white);--_color---secondary:#f50;--_color---m-white:white;--_color---content--soft:#fff9;--_color---bg--sf-1:#1a1a1a;--_color---border--light:#ffffff14;--_color---content--brand:var(--_color---primary);--_color---border--main:#ffffff29;--_color---content--disable:#ffffff29;--_color---content--sub:#ffffffb3;--_color---m-black:#111;--_color---unused:black;--_color---bg--brand:var(--_color---primary);--_color---primary:#0016cb;position:relative;overflow:hidden }
+
+.cta-text-wrap { z-index:2;text-align:center;flex-flow:column;justify-content:center;align-items:center;height:40.5rem;padding-top:10.625rem;padding-bottom:10.625rem;display:flex;position:relative }
+
+.cta-title { max-width:28.125rem;margin-bottom:1.25rem }
+
+.cta-desc { max-width:20.625rem;color:var(--_color---content--sub) }
+
+.cta-circs { z-index:1;aspect-ratio:1;pointer-events:none;justify-content:center;align-items:center;width:31.25rem;display:flex;position:relative }
+
+.cta-circs:where(.w-variant-e85f0841-e19f-4fdd-5123-891d8814f1ff) { display:none }
+
+.cta-circ { aspect-ratio:1;border:var(--border--size)solid var(--_color---border--light);border-radius:50%;width:100%;position:absolute }
+
+.terms-main-toc-title-ic,.cta-btn-wrap { display:none }
+
+.cta-bg { display:none;position:absolute;inset:0 }
+
+.cta-bg:where(.w-variant-e85f0841-e19f-4fdd-5123-891d8814f1ff) { display:block }
+
+.cta-bg-overlay { background-color:var(--_color---m-black);opacity:.32 }
+
+.cta-bg-overlay:where(.w-variant-e85f0841-e19f-4fdd-5123-891d8814f1ff) { z-index:1;position:absolute;inset:0 }
+
+.cta-link { z-index:2;position:absolute;inset:0 }
+
+.cta-inner { -webkit-mask:linear-gradient(#0000 0%,#000 15% 85%,#0000 100%);mask:linear-gradient(#0000 0%,#000 15% 85%,#0000 100%) }
+
+@media screen and (max-width:991px) {
+
+  .cta-text-wrap { height:30rem }
+  .cta-desc { margin-bottom:1.25rem }
+  .cta-btn-wrap { display:block }
+
+}
+
+@media screen and (max-width:767px) {
+
+  .cta-text-wrap { height:auto;padding-top:8.375rem;padding-bottom:7.125rem }
+  .cta-title { max-width:18.75rem }
+  .cta-desc { max-width:20rem }
+  .cta-circs { width:20rem }
+
+}
+
+#w-node-_16cd6236-a00c-1313-b86e-e3a622eca700-22eca6fd { grid-area:1/7/2/-7 }
+
+#w-node-_16cd6236-a00c-1313-b86e-e3a622eca707-22eca6fd { grid-area:1/7/2/-7;place-self:center }
+
+@media screen and (max-width:991px) {
+
+  #w-node-_16cd6236-a00c-1313-b86e-e3a622eca6fd-22eca6fd { grid-column-end:-3 }
+  #w-node-_16cd6236-a00c-1313-b86e-e3a622eca700-22eca6fd { grid-column:3/-3 }
+
+}
+
+@media screen and (max-width:767px) {
+
+  #w-node-_16cd6236-a00c-1313-b86e-e3a622eca700-22eca6fd { grid-column:2/-2;grid-row-start:1 }
+  #w-node-_16cd6236-a00c-1313-b86e-e3a622eca707-22eca6fd { grid-column:1/-1 }
+
+}
+
+/* ===== cta overrides from the live page's embedded custom css ===== */
+.anim-wave { animation: wave 12s linear infinite; }
+@keyframes wave { 0% { transform: scale(1); opacity: 0; } 20%, 80% { opacity: 0.65; } 60% { opacity: 1; } 100% { transform: scale(3); opacity: 0; } }
+/* raw .btn scoped (our chrome redefines .btn); rems x0.625 */
+.cta-btn-wrap .btn { border: var(--border--size) solid var(--_color---border--bold); color: var(--_color---content--main); cursor: pointer; border-radius: 100vmax; flex: 1; justify-content: center; align-items: center; padding: 1.1875rem 1.75rem 1.0625rem; transition: border-color .4s, background-color .4s, color .4s; display: flex; }
+.cta-btn-wrap .btn-txt { text-align: center; justify-content: center; align-items: center; display: flex; }
